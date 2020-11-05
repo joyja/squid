@@ -1,0 +1,5 @@
+"""Read only queries"""
+type Query {
+  """Gives some information about this application."""
+  info: String!
+}
