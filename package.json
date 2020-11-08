@@ -27,7 +27,10 @@
     "prettier": "^2.1.2"
   },
   "scripts": {
-    "test": "jest"
+    "test": "jest --watchAll",
+    "dev": "NODE_ENV=development nodemon ./index.js -e js,graphql --watch src",
+    "test:ci": "jest",
+    "test:coverage": "jest --coverage"
   },
   "repository": {
     "type": "git",

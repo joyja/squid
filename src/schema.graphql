@@ -1,5 +1,24 @@
+scalar Datetime
+
+"""Container data."""
+type Container {
+  name: String!,
+  status: String!,
+  status_code: Int!,
+  architecture: String!,
+  ephemeral: Boolean!,
+  profiles: String!
+  stateful: Boolean!,
+  description: String!,
+  created_at: Datetime!,
+  last_used_at: Datetime!,
+  location: String!,
+  type: String!
+}
+
 """Read only queries"""
 type Query {
   """Gives some information about this application."""
   info: String!
+  getContainers: [Container!]!
 }
