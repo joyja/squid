@@ -4,8 +4,8 @@ const https = require('https')
 const path = require('path')
 
 const agent = new https.Agent({
-  cert: fs.readFileSync(path.resolve('./lxd.crt'), 'utf-8'),
-  key: fs.readFileSync(path.resolve('./lxd.key'), 'utf-8'),
+  cert: fs.readFileSync(path.resolve('./certificates/lxd.crt'), 'utf-8'),
+  key: fs.readFileSync(path.resolve('./certificates/lxd.key'), 'utf-8'),
   rejectUnauthorized: false,
 })
 
