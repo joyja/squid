@@ -1,8 +1,19 @@
 const http = require('http')
+const fetch = require('node-fetch')
+const fs = require('fs')
+const https = require('https')
+const path = require('path')
 const express = require('express')
 const { ApolloServer, PubSub, gql } = require('apollo-server-express')
 const resolvers = require('./resolvers')
-const fs = require('fs')
+
+const agent = new https.Agent({
+  cert: fs.readFileSync(path.resolve('./certificates/lxd.crt'), 'utf-8'),
+  key: fs.readFileSync(path.resolve('./certificates/lxd.key'), 'utf-8'),
+  rejectUnauthorized: false,
+})
+
+const lxdEndpoint = 'https://jar1.internal1.jarautomation.io:8443'
 
 const app = express()
 
@@ -25,6 +36,8 @@ start = async function () {
       ...req,
       requests: req,
       pubsub,
+      agent,
+      lxdEndpoint,
     }),
     introspection: true,
     playground: true,

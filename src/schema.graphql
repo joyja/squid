@@ -1,18 +1,31 @@
 scalar Datetime
 
+"""Configuration Data"""
+type Config {
+  securityNesting: Boolean
+  userUserData: String
+}
+
+"""Profile data."""
+type Profile {
+  name: String!
+  description: String!
+  config: Config!
+}
+
 """Container data."""
 type Container {
-  name: String!,
-  status: String!,
-  status_code: Int!,
-  architecture: String!,
-  ephemeral: Boolean!,
-  profiles: String!
-  stateful: Boolean!,
-  description: String!,
-  created_at: Datetime!,
-  last_used_at: Datetime!,
-  location: String!,
+  name: String!
+  status: String!
+  status_code: Int!
+  architecture: String!
+  ephemeral: Boolean!
+  profiles: [Profile!]!
+  stateful: Boolean!
+  description: String!
+  created_at: Datetime!
+  last_used_at: Datetime!
+  location: String!
   type: String!
 }
 
@@ -20,5 +33,11 @@ type Container {
 type Query {
   """Gives some information about this application."""
   info: String!
-  getContainers: [Container!]!
+  """Gives a list of containers and their properties"""
+  containers: [Container!]!
+}
+
+"""Write queries"""
+type Mutation {
+  setDescription(containerName: String!, description: String!): Container
 }
