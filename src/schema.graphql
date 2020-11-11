@@ -31,10 +31,12 @@ type Container {
 
 """Read only queries"""
 type Query {
-  """Gives some information about this application."""
+  """Returns some information about this application."""
   info: String!
-  """Gives a list of containers and their properties"""
+  """Returns a list of containers and their properties"""
   containers: [Container!]!
+  """Returns a list of profiles and their properties"""
+  profiles: [Profile!]!
 }
 
 """Write queries"""
