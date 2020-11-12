@@ -1,5 +1,11 @@
 scalar Datetime
 
+type Device {
+  id: String!
+  name: String
+  type: String!
+}
+
 """Configuration Data"""
 type Config {
   securityNesting: Boolean
@@ -11,6 +17,7 @@ type Profile {
   name: String!
   description: String!
   config: Config!
+  devices: [Device!]!
 }
 
 """Container data."""

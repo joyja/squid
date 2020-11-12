@@ -13,7 +13,7 @@ const agent = new https.Agent({
   rejectUnauthorized: false,
 })
 
-const lxdEndpoint = 'https://jar1.internal1.jarautomation.io:8443'
+const lxdEndpoint = 'https://192.168.50.205:8443'
 
 const app = express()
 

@@ -90,4 +90,4 @@ sw.*
 *.swp
 
 #certificates (for LXD authentication)
-certificates/*
+certificates/
