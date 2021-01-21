@@ -1,7 +1,7 @@
 module.exports = {
   apps: [
     {
-      name: 'edge-nat',
+      name: 'factotum',
       script: './src/index.js',
       env: {
         NODE_ENV: 'production',
@@ -13,8 +13,8 @@ module.exports = {
       user: 'root',
       host: 'localhost',
       ref: 'origin/main',
-      repo: 'https://github.com/joyja/edge-nat.git',
-      path: '/usr/local/bin/edge-nat',
+      repo: 'https://github.com/joyja/factotum.git',
+      path: '/usr/local/bin/factotum',
       'post-deploy':
         'sudo npm install && sudo pm2 startOrRestart ecosystem.config.js --env production',
     },
