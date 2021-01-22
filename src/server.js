@@ -13,14 +13,16 @@ const agent = new https.Agent({
   rejectUnauthorized: false,
 })
 
-const lxdEndpoint = 'https://192.168.50.205:8443'
+const lxdHost = process.env.FACTOTUM_LXD_HOST || 'localhost'
+const lxdPort = process.env.FACTOTUM_LXD_PORT || 8443
+const lxdEndpoint = `https://${lxdHost}:${lxdPort}`
 
 const app = express()
 
 let httpServer = undefined
 let graphqlServer = undefined
-let listenHost = process.env.EDGENAT_GRAPHQL_HOST || 'localhost'
-let listenPort = process.env.EDGENAT_GRAPHQL_PORT || 4000
+let listenHost = process.env.FACTOTUM_HOST || 'localhost'
+let listenPort = process.env.FACTOTUM_PORT || 4000
 
 start = async function () {
   const pubsub = new PubSub()
