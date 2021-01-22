@@ -36,6 +36,24 @@ type Container {
   type: String!
 }
 
+type NetworkInterfaceConfig {
+  name: String
+  dhcp4: Boolean
+  addresses: [String!]
+  gateway4: String
+}
+
+type NetworkInterface {
+  id: String
+  name: String
+  alias: String
+  mtu: String
+  state: String
+  macAddress: String
+  ipAddresses: [String!]!
+  gateway: String
+}
+
 """Read only queries"""
 type Query {
   """Returns some information about this application."""
@@ -44,9 +62,21 @@ type Query {
   containers: [Container!]!
   """Returns a list of profiles and their properties"""
   profiles: [Profile!]!
+  """List of network interfaces"""
+  networkInterfaces: [NetworkInterface!]!
+  """List of network interface configurations"""
+  networkInterfaceConfigs: [NetworkInterfaceConfig!]!
 }
 
 """Write queries"""
 type Mutation {
+  """set description of container"""
   setDescription(containerName: String!, description: String!): Container
+  """Set network interface configuration"""
+  setInterfaceConfig(
+    name: String!,
+    dhcp: Boolean!,
+    addresses: [String!]!
+    gateway: String  
+  ): NetworkInterface
 }
