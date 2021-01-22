@@ -10,7 +10,7 @@ const getConfig = function () {
     fileContents = fs.readFileSync(dirPath + filePath)
     return {
       path: filePath,
-      contents: yaml.safeLoad(fileContents),
+      contents: yaml.load(fileContents),
     }
   })
 }
@@ -41,7 +41,7 @@ const setInterfaceConfig = function (updates) {
         }
       }
       config.contents.network.ethernets[updates.name] = newConfig
-      const yamlDump = yaml.safeDump(config.contents)
+      const yamlDump = yaml.dump(config.contents)
       fs.writeFileSync('/etc/netplan/' + config.path, yamlDump)
       exec('sudo netplan apply', (error, stdout, stderr) => {
         if (error) console.error(error)
