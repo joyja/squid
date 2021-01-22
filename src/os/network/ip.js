@@ -1,5 +1,53 @@
 const { exec } = require('child_process')
 
+const setInterfaceDown = async function (name) {
+  return Promise((resolve, reject) => {
+    exec(`sudo ip link set ${name} down`, (err, stdout, stderr) => {
+      if (err) console.error(err)
+      if (stderr) console.error(stderr)
+    })
+  })
+}
+
+const setInterfaceUp = async function (name) {
+  return Promise((resolve, reject) => {
+    exec(`sudo ip link set ${name} up`, (err, stdout, stderr) => {
+      if (err) console.error(err)
+      if (stderr) console.error(stderr)
+    })
+  })
+}
+
+const getDefaultRoutes = async function () {
+  return new Promise((resolve, reject) => {
+    exec('ip route', (err, stdout, stderr) => {
+      const defaultRoutes = stdout
+        .split('\n')
+        .filter(String)
+        .filter((line) => line.includes('default'))
+        .map(function (line) {
+          // packets, bytes, target, pro, opt, in, out, src, dst, opts
+          const raw = line.trim()
+          const fields = raw.split(/\s+/)
+          const metricIndex = fields.findIndex((field) =>
+            field.includes('metric')
+          )
+          return {
+            gateway: fields[2],
+            interface: fields[4],
+            metric:
+              metricIndex !== -1
+                ? fields[
+                    fields.findIndex((field) => field.includes('metric')) + 1
+                  ]
+                : null,
+          }
+        })
+      resolve(defaultRoutes)
+    })
+  })
+}
+
 const getInterfaces = async function () {
   return new Promise((resolve, reject) => {
     exec('ip addr show', (err, stdout, stderr) => {
@@ -71,4 +119,7 @@ const getInterfaces = async function () {
 
 module.exports = {
   getInterfaces,
+  getDefaultRoutes,
+  setInterfaceDown,
+  setInterfaceUp,
 }
