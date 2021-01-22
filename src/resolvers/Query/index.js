@@ -1,5 +1,5 @@
 const fetch = require('node-fetch')
-const network = require('../../network')
+const { network } = require('../../os')
 
 const containers = async function (root, args, { lxdEndpoint, agent }, info) {
   const result = await fetch(`${lxdEndpoint}/1.0/instances`, {

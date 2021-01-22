@@ -1,5 +1,5 @@
 const fetch = require('node-fetch')
-const network = require('../../network')
+const { network } = require('../../os')
 
 const setDescription = async function (
   root,
