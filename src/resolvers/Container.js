@@ -22,6 +22,7 @@ const network = async function (parent, args, { lxdEndpoint, agent }, info) {
     return {
       name: key,
       ...network[key],
+      macAddress: network[key].hwaddr,
       addresses: network[key].addresses.filter((address) => {
         return address.family !== 'inet6'
       }),
