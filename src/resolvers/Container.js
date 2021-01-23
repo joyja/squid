@@ -31,7 +31,7 @@ const network = async function (parent, args, { lxdEndpoint, agent }, info) {
       }
     })
     .filter((network) => {
-      return network.addresses.length > 0, network.type !== 'loopback'
+      return network.addresses.length > 0 && network.type !== 'loopback'
     })
 }
 
