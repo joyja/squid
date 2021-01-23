@@ -47,7 +47,6 @@ type ContainerNetwork {
 type Container {
   name: String!
   network: [ContainerNetwork!]!
-  state: ContainerState!
   status: String!
   status_code: Int!
   architecture: String!
