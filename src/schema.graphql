@@ -20,9 +20,34 @@ type Profile {
   devices: [Device!]!
 }
 
+"""Container Network Address."""
+type ContainerNetworkAddress {
+  family: String!
+  address: String!
+  netmask: String!
+  scope: String!
+}
+
+"""Container Network Info."""
+type ContainerNetwork {
+  name: String!
+  addresses: [ContainerNetworkAddress!]!
+  bytes_received: Int!
+  bytes_sent: Int!
+  packets_received: Int!
+  packets_sent: Int!
+  macAddress: String!
+  host_name: String
+  mtu: Int!
+  state: String!
+  type: String!
+}
+
 """Container data."""
 type Container {
   name: String!
+  network: [ContainerNetwork!]!
+  state: ContainerState!
   status: String!
   status_code: Int!
   architecture: String!

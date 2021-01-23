@@ -10,6 +10,24 @@ const profiles = async function (parent, args, { lxdEndpoint, agent }, info) {
   return profiles.map((p) => p.metadata)
 }
 
+const network = async function (parent, args, { lxdEndpoint, agent }, info) {
+  const {
+    metadata: { network },
+  } = await fetch(`${lxdEndpoint}/1.0/instances/${parent.name}/state`, {
+    agent: agent,
+  }).then((r) => {
+    return r.json()
+  })
+  return Object.keys(network).map((key) => {
+    return {
+      name: key,
+      ...network[key],
+      ...network[key].counters,
+    }
+  })
+}
+
 module.exports = {
   profiles,
+  network,
 }
