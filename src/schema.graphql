@@ -94,6 +94,12 @@ type Query {
 
 """Write queries"""
 type Mutation {
+  """start a container"""
+  startContainer(containerName: String!)
+  """stop a container"""
+  stopContainer(containerName: String!)
+  """restart a container"""
+  restartContainer(containerName: String!)
   """set description of container"""
   setDescription(containerName: String!, description: String!): Container
   """Set network interface configuration"""

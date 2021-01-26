@@ -1,5 +1,45 @@
 const fetch = require('node-fetch')
 const { network } = require('../../os')
+const lxd = require('../../lxd')
+
+const startContainer = async function (
+  root,
+  args,
+  { lxdEndpoint, agent },
+  info
+) {
+  return lxd.startContainer({
+    lxdEndpoint,
+    containerName: args.containerName,
+    action: 'start',
+  })
+}
+
+const stopContainer = async function (
+  root,
+  args,
+  { lxdEndpoint, agent },
+  info
+) {
+  return lxd.startContainer({
+    lxdEndpoint,
+    containerName: args.containerName,
+    action: 'stop',
+  })
+}
+
+const restartContainer = async function (
+  root,
+  args,
+  { lxdEndpoint, agent },
+  info
+) {
+  return lxd.startContainer({
+    lxdEndpoint,
+    containerName: args.containerName,
+    action: 'restart',
+  })
+}
 
 const setDescription = async function (
   root,
@@ -62,6 +102,9 @@ const setInterfaceConfig = async function (root, args, context, info) {
 }
 
 module.exports = {
+  startContainer,
+  stopContainer,
+  restartContainer,
   setDescription,
   setInterfaceConfig,
 }
