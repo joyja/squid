@@ -8,7 +8,7 @@ const startContainer = async function (
   { lxdEndpoint, agent },
   info
 ) {
-  return lxd.startContainer({
+  return lxd.changeContainerState({
     lxdEndpoint,
     containerName: args.containerName,
     action: 'start',
@@ -21,7 +21,7 @@ const stopContainer = async function (
   { lxdEndpoint, agent },
   info
 ) {
-  return lxd.startContainer({
+  return lxd.changeContainerState({
     lxdEndpoint,
     containerName: args.containerName,
     action: 'stop',
@@ -34,7 +34,7 @@ const restartContainer = async function (
   { lxdEndpoint, agent },
   info
 ) {
-  return lxd.startContainer({
+  return lxd.changeContainerState({
     lxdEndpoint,
     containerName: args.containerName,
     action: 'restart',
