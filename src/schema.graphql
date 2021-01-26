@@ -95,11 +95,11 @@ type Query {
 """Write queries"""
 type Mutation {
   """start a container"""
-  startContainer(containerName: String!)
+  startContainer(containerName: String!): Container
   """stop a container"""
-  stopContainer(containerName: String!)
+  stopContainer(containerName: String!): Container
   """restart a container"""
-  restartContainer(containerName: String!)
+  restartContainer(containerName: String!): Container
   """set description of container"""
   setDescription(containerName: String!, description: String!): Container
   """Set network interface configuration"""
