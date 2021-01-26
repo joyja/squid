@@ -7,7 +7,7 @@ const changeContainerState = async function ({
   action,
 }) {
   const result = await fetch(
-    `${lxdEndpoint}/1.0/instaces/${containerName}/state`,
+    `${lxdEndpoint}/1.0/instances/${containerName}/state`,
     {
       method: 'PUT',
       agent,
