@@ -15,7 +15,7 @@ const changeContainerState = async function ({
       force: false,
     }),
   })
-  return fetch(`${lxdEndpoint}/1.0/instances/${args.containerName}`, {
+  return fetch(`${lxdEndpoint}/1.0/instances/${containerName}`, {
     agent,
   })
     .then((result) => result.json())
