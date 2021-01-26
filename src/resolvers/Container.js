@@ -18,21 +18,25 @@ const network = async function (parent, args, { lxdEndpoint, agent }, info) {
   }).then((r) => {
     return r.json()
   })
-  return Object.keys(network)
-    .map((key) => {
-      return {
-        name: key,
-        ...network[key],
-        macAddress: network[key].hwaddr,
-        addresses: network[key].addresses.filter((address) => {
-          return address.family !== 'inet6'
-        }),
-        ...network[key].counters,
-      }
-    })
-    .filter((network) => {
-      return network.addresses.length > 0 && network.type !== 'loopback'
-    })
+  if (network) {
+    return Object.keys(network)
+      .map((key) => {
+        return {
+          name: key,
+          ...network[key],
+          macAddress: network[key].hwaddr,
+          addresses: network[key].addresses.filter((address) => {
+            return address.family !== 'inet6'
+          }),
+          ...network[key].counters,
+        }
+      })
+      .filter((network) => {
+        return network.addresses.length > 0 && network.type !== 'loopback'
+      })
+  } else {
+    return []
+  }
 }
 
 module.exports = {
