@@ -2,6 +2,7 @@ const fetch = require('node-fetch')
 
 const changeContainerState = async function ({
   lxdEndpoint,
+  agent,
   containerName,
   action,
 }) {
