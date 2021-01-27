@@ -26,6 +26,20 @@ const changeContainerState = async function ({
     .then((data) => data.metadata)
 }
 
+const start = async function ({ lxdEndpoint, agent, containerName }) {
+  return changeContainerState(lxdEndpoint, agent, containerName, 'start')
+}
+
+const stop = async function ({ lxdEndpoint, agent, containerName }) {
+  return changeContainerState(lxdEndpoint, agent, containerName, 'stop')
+}
+
+const restart = async function ({ lxdEndpoint, agent, containerName }) {
+  return changeContainerState(lxdEndpoint, agent, containerName, 'restart')
+}
+
 module.exports = {
-  changeContainerState,
+  start,
+  stop,
+  restart,
 }

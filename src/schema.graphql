@@ -20,6 +20,18 @@ type Profile {
   devices: [Device!]!
 }
 
+"""Operation data."""
+type Operation {
+  id: String!
+  class: String!
+  created_at: Datetime!
+  updated_at: Datetime!
+  status: String!
+  status_code: Int!
+  may_cancel: Boolean!
+  err: String
+}
+
 """Container Network Address."""
 type ContainerNetworkAddress {
   family: String!
@@ -84,16 +96,21 @@ type Query {
   info: String!
   """Returns a list of containers and their properties"""
   containers: [Container!]!
+  """List of current operations"""
+  operations: [Operation!]!
   """Returns a list of profiles and their properties"""
   profiles: [Profile!]!
   """List of network interfaces"""
   networkInterfaces: [NetworkInterface!]!
   """List of network interface configurations"""
   networkInterfaceConfigs: [NetworkInterfaceConfig!]!
+  
 }
 
 """Write queries"""
 type Mutation {
+  """create a container"""
+  createContainer(containerName: String!, profile: String!): Operation
   """start a container"""
   startContainer(containerName: String!): Container
   """stop a container"""

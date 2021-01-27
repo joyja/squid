@@ -1,5 +1,7 @@
-const state = require('./state')
+const instances = require('./instances')
+const operations = require('./operations')
 
 module.exports = {
-  ...state,
+  instances,
+  operations,
 }

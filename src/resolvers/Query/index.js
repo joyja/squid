@@ -1,5 +1,6 @@
 const fetch = require('node-fetch')
 const { network } = require('../../os')
+const lxd = require('../../lxd')
 
 const containers = async function (root, args, { lxdEndpoint, agent }, info) {
   const result = await fetch(`${lxdEndpoint}/1.0/instances`, {
@@ -35,6 +36,10 @@ const profiles = async function (root, args, { lxdEndpoint, agent }, info) {
   })
 }
 
+const operations = function (root, args, { lxdEndpoint, agent }, info) {
+  return lxd.operations.list({ lxdEndpoint, agent })
+}
+
 const networkInterfaces = async function (root, args, context, info) {
   const ifaces = await network.getInterfaces()
   const defaultRoutes = await network.getDefaultRoutes()
@@ -65,6 +70,7 @@ module.exports = {
   info: () => `IIOT application container manger.`,
   containers,
   profiles,
+  operations,
   networkInterfaces,
   networkInterfaceConfigs,
 }
