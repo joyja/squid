@@ -27,15 +27,30 @@ const changeContainerState = async function ({
 }
 
 const start = async function ({ lxdEndpoint, agent, containerName }) {
-  return changeContainerState(lxdEndpoint, agent, containerName, 'start')
+  return changeContainerState({
+    lxdEndpoint,
+    agent,
+    containerName,
+    action: 'start',
+  })
 }
 
 const stop = async function ({ lxdEndpoint, agent, containerName }) {
-  return changeContainerState(lxdEndpoint, agent, containerName, 'stop')
+  return changeContainerState({
+    lxdEndpoint,
+    agent,
+    containerName,
+    action: 'stop',
+  })
 }
 
 const restart = async function ({ lxdEndpoint, agent, containerName }) {
-  return changeContainerState(lxdEndpoint, agent, containerName, 'restart')
+  return changeContainerState({
+    lxdEndpoint,
+    agent,
+    containerName,
+    action: 'restart',
+  })
 }
 
 module.exports = {
