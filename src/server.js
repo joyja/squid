@@ -33,10 +33,10 @@ start = async function () {
   containers.forEach((container) => {
     cloudInitComplete[container.name] = true
   })
-  app.post('/phone-home', async (req, res, next) => {
+  app.post('/phone-home/:instanceId', async (req, res, next) => {
     console.log(req)
-    if (cloudInitComplete[req.body.hostname]) {
-      cloudInitComplete[req.body.hostname] = true
+    if (cloudInitComplete[req.params.instanceId]) {
+      cloudInitComplete[req.params.instanceId] = true
       res.sendStatus(200)
     } else {
       res.status(400).send({ message: 'Container not found.' })
