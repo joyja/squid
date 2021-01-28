@@ -6,7 +6,7 @@ const changeContainerState = async function ({
   containerName,
   action,
 }) {
-  const result = await fetch(
+  const operation = await fetch(
     `${lxdEndpoint}/1.0/instances/${containerName}/state`,
     {
       method: 'PUT',
@@ -18,7 +18,9 @@ const changeContainerState = async function ({
       }),
     }
   )
-  console.log(result)
+    .then((result) => result.json())
+    .then((data) => data.metadata)
+  await fetch(`${lxdEndpoint}/1.0/operations/${operation.id}/wait`)
   return fetch(`${lxdEndpoint}/1.0/instances/${containerName}`, {
     agent,
   })
