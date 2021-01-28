@@ -20,6 +20,7 @@ const create = async function ({ lxdEndpoint, agent, containerName, profile }) {
   })
     .then((result) => result.json())
     .then((data) => data.metadata)
+  console.log(operation)
   await fetch(`${lxdEndpoint}/1.0/operations/${operation.id}/wait`, {
     method: 'GET',
     agent,

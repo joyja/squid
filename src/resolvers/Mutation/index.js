@@ -12,6 +12,7 @@ const createContainer = async function (
     lxdEndpoint,
     agent,
     containerName: args.containerName,
+    profile: args.profile,
   })
 }
 
