@@ -1,4 +1,5 @@
 const { start, stop, restart } = require('./state')
+const fetch = require('node-fetch')
 
 const create = async function ({ lxdEndpoint, agent, containerName, profile }) {
   const operation = await fetch(`${lxdEndpoint}/1.0/instances`, {
