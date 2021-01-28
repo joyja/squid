@@ -6,7 +6,7 @@ const path = require('path')
 const express = require('express')
 const { ApolloServer, PubSub, gql } = require('apollo-server-express')
 const resolvers = require('./resolvers')
-const { lxd } = require('./lxd')
+const lxd = require('./lxd')
 
 const agent = new https.Agent({
   cert: fs.readFileSync(path.resolve('./certificates/lxd.crt'), 'utf-8'),
