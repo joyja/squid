@@ -1,7 +1,7 @@
 const { start, stop, restart } = require('./state')
 
 const create = async function ({ lxdEndpoint, agent, containerName, profile }) {
-  const result = await fetch(`${lxdEndpoint}/1.0/instances`, {
+  const operation = await fetch(`${lxdEndpoint}/1.0/instances`, {
     method: 'POST',
     agent,
     body: JSON.stringify({
@@ -17,6 +17,17 @@ const create = async function ({ lxdEndpoint, agent, containerName, profile }) {
       },
     }),
   })
+    .then((result) => result.json())
+    .then((data) => data.metadata)
+  await fetch(`${lxdEndpoint}/1.0/operations/${operation.id}/wait`, {
+    method: 'GET',
+    agent,
+  })
+  return fetch(`${lxdEndpoint}/1.0/instances/${containerName}`, {
+    agent,
+  })
+    .then((result) => result.json())
+    .then((data) => data.metadata)
 }
 
 module.exports = {
