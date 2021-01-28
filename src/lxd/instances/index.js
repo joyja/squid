@@ -15,8 +15,7 @@ const create = async function ({ lxdEndpoint, agent, containerName, profile }) {
         type: 'image',
         properties: {
           os: 'ubuntu',
-          release: '20.04',
-          architecture: 'x86_64',
+          release: 'focal',
         },
       },
     }),
