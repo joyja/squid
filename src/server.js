@@ -7,6 +7,13 @@ const express = require('express')
 const { ApolloServer, PubSub, gql } = require('apollo-server-express')
 const resolvers = require('./resolvers')
 
+app.use(express.json())
+
+app.post('/phone-home', async (req, res, next) => {
+  console.log(req)
+  res.send({ status: 'got it' })
+})
+
 const agent = new https.Agent({
   cert: fs.readFileSync(path.resolve('./certificates/lxd.crt'), 'utf-8'),
   key: fs.readFileSync(path.resolve('./certificates/lxd.key'), 'utf-8'),
