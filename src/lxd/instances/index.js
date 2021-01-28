@@ -21,12 +21,13 @@ const create = async function ({ lxdEndpoint, agent, containerName, profile }) {
     }),
   })
     .then((result) => result.json())
-    .then((data) => {
-      console.log(data)
-      return data.metadata
-    })
-  console.log(operation)
+    .then((data) => data.metadata)
   await fetch(`${lxdEndpoint}/1.0/operations/${operation.id}/wait`, {
+    method: 'GET',
+    agent,
+  })
+  const startOperation = await start({ lxdEndpoint, agent, containerName })
+  await fetch(`${lxdEndpoint}/1.0/operations/${startOperation.id}/wait`, {
     method: 'GET',
     agent,
   })
