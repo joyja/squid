@@ -3,19 +3,7 @@ const { network } = require('../../os')
 const lxd = require('../../lxd')
 
 const containers = async function (root, args, { lxdEndpoint, agent }, info) {
-  const result = await fetch(`${lxdEndpoint}/1.0/instances`, {
-    agent,
-  })
-  const { metadata: containers } = await result.json()
-  const requestPromises = containers.map((container) => {
-    return fetch(`${lxdEndpoint}${container}`, {
-      agent,
-    })
-  })
-  const containerResponses = await Promise.all(requestPromises)
-  const containerDataPromises = containerResponses.map((r) => r.json())
-  const containerData = await Promise.all(containerDataPromises)
-  return containerData.map((d) => d.metadata)
+  return lxd.instances.list()
 }
 
 const profiles = async function (root, args, { lxdEndpoint, agent }, info) {

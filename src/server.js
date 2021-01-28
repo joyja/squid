@@ -23,7 +23,7 @@ app.use(express.json())
 
 app.post('/phone-home', async (req, res, next) => {
   console.log(req)
-  res.send({ status: 'got it' })
+  res.sendStatus()
 })
 
 let httpServer = undefined
