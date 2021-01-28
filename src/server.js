@@ -34,6 +34,7 @@ start = async function () {
     cloudInitComplete[container.name] = true
   })
   app.post('/phone-home', async (req, res, next) => {
+    console.log('this happend')
     if (cloudInitComplete[req.body.hostname]) {
       cloudInitComplete[req.body.hostname] = true
       res.sendStatus(200)
