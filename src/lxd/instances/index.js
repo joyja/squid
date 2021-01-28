@@ -6,7 +6,7 @@ const list = async function ({ lxdEndpoint, agent }) {
     agent,
   })
     .then((result) => result.json())
-    .then((data) => data.metadata?.containers)
+    .then((data) => data.metadata)
   return Promise.all(
     containers.map((container) => {
       return fetch(`${lxdEndpoint}${container}`, {
