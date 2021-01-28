@@ -9,11 +9,6 @@ const resolvers = require('./resolvers')
 
 app.use(express.json())
 
-app.post('/phone-home', async (req, res, next) => {
-  console.log(req)
-  res.send({ status: 'got it' })
-})
-
 const agent = new https.Agent({
   cert: fs.readFileSync(path.resolve('./certificates/lxd.crt'), 'utf-8'),
   key: fs.readFileSync(path.resolve('./certificates/lxd.key'), 'utf-8'),
@@ -25,6 +20,11 @@ const lxdPort = process.env.FACTOTUM_LXD_PORT || 8443
 const lxdEndpoint = `https://${lxdHost}:${lxdPort}`
 
 const app = express()
+
+app.post('/phone-home', async (req, res, next) => {
+  console.log(req)
+  res.send({ status: 'got it' })
+})
 
 let httpServer = undefined
 let graphqlServer = undefined
