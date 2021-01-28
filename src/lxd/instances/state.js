@@ -20,7 +20,10 @@ const changeContainerState = async function ({
   )
     .then((result) => result.json())
     .then((data) => data.metadata)
-  await fetch(`${lxdEndpoint}/1.0/operations/${operation.id}/wait`)
+  await fetch(`${lxdEndpoint}/1.0/operations/${operation.id}/wait`, {
+    method: 'GET',
+    agent,
+  })
   return fetch(`${lxdEndpoint}/1.0/instances/${containerName}`, {
     agent,
   })
