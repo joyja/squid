@@ -36,8 +36,10 @@ const profiles = async function (root, args, { lxdEndpoint, agent }, info) {
   })
 }
 
-const operations = function (root, args, { lxdEndpoint, agent }, info) {
-  return lxd.operations.list({ lxdEndpoint, agent })
+const operations = async function (root, args, { lxdEndpoint, agent }, info) {
+  const result = await lxd.operations.list({ lxdEndpoint, agent })
+  console.log(result)
+  return result
 }
 
 const networkInterfaces = async function (root, args, context, info) {
