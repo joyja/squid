@@ -28,7 +28,7 @@ let listenHost = process.env.FACTOTUM_HOST || 'localhost'
 let listenPort = process.env.FACTOTUM_PORT || 4000
 
 start = async function () {
-  const containers = await lxd.instances.list()
+  const containers = await lxd.instances.list({ lxdEndpoint, agent })
   const cloudInitComplete = {}
   containers.forEach((container) => {
     cloudInitComplete[container.name] = true
