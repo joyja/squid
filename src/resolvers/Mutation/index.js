@@ -5,15 +5,17 @@ const lxd = require('../../lxd')
 const createContainer = async function (
   root,
   args,
-  { lxdEndpoint, agent },
+  { lxdEndpoint, agent, cloudInitComplete },
   info
 ) {
-  return lxd.instances.create({
+  const container = await lxd.instances.create({
     lxdEndpoint,
     agent,
     containerName: args.containerName,
     profile: args.profile,
   })
+  cloudInitComplete[container.name] = false
+  return container
 }
 
 const startContainer = async function (

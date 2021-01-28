@@ -2,8 +2,22 @@ const fetch = require('node-fetch')
 const { network } = require('../../os')
 const lxd = require('../../lxd')
 
-const containers = async function (root, args, { lxdEndpoint, agent }, info) {
-  return lxd.instances.list()
+const containers = async function (
+  root,
+  args,
+  { lxdEndpoint, agent, cloudInitComplete },
+  info
+) {
+  return Promise.all(lxd.instances.list({ lxdEndpoint, agent })).then(
+    (containers) => {
+      return containers.map((container) => {
+        return {
+          ...container,
+          cloudInitComplete: cloudInitComplete[container.name],
+        }
+      })
+    }
+  )
 }
 
 const profiles = async function (root, args, { lxdEndpoint, agent }, info) {

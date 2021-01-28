@@ -6,6 +6,7 @@ const path = require('path')
 const express = require('express')
 const { ApolloServer, PubSub, gql } = require('apollo-server-express')
 const resolvers = require('./resolvers')
+const { lxd } = require('./lxd')
 
 const agent = new https.Agent({
   cert: fs.readFileSync(path.resolve('./certificates/lxd.crt'), 'utf-8'),
@@ -21,17 +22,25 @@ const app = express()
 
 app.use(express.json())
 
-app.post('/phone-home', async (req, res, next) => {
-  console.log(req)
-  res.sendStatus()
-})
-
 let httpServer = undefined
 let graphqlServer = undefined
 let listenHost = process.env.FACTOTUM_HOST || 'localhost'
 let listenPort = process.env.FACTOTUM_PORT || 4000
 
 start = async function () {
+  const containers = await lxd.instances.list()
+  const cloudInitComplete = {}
+  containers.forEach((container) => {
+    cloudInitComplete[container.name] = true
+  })
+  app.post('/phone-home', async (req, res, next) => {
+    if (cloudInitComplete[req.body.hostname]) {
+      cloudInitComplete[req.body.hostname] = true
+      res.sendStatus(200)
+    } else {
+      res.status(400).send({ message: 'Container not found.' })
+    }
+  })
   const pubsub = new PubSub()
   graphqlServer = new ApolloServer({
     typeDefs: gql`
@@ -47,6 +56,7 @@ start = async function () {
       pubsub,
       agent,
       lxdEndpoint,
+      cloudInitComplete,
     }),
     introspection: true,
     playground: true,
