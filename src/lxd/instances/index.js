@@ -12,9 +12,12 @@ const create = async function ({ lxdEndpoint, agent, containerName, profile }) {
       ephemeral: false,
       type: 'container',
       source: {
-        os: 'ubuntu',
-        release: '20.04',
-        architecture: 'x86_64',
+        type: 'image',
+        properties: {
+          os: 'ubuntu',
+          release: '20.04',
+          architecture: 'x86_64',
+        },
       },
     }),
   })
