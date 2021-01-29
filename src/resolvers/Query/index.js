@@ -9,7 +9,6 @@ const containers = async function (
   info
 ) {
   return lxd.instances.list({ lxdEndpoint, agent }).then((containers) => {
-    console.log(containers)
     return containers.map((container) => {
       return {
         ...container,
