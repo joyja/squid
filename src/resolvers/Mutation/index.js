@@ -15,6 +15,7 @@ const createContainer = async function (
     profile: args.profile,
   })
   cloudInitComplete[container.name] = false
+  console.log(cloudInitComplete)
   return container
 }
 
