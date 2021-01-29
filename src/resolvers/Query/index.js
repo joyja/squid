@@ -38,7 +38,6 @@ const profiles = async function (root, args, { lxdEndpoint, agent }, info) {
 
 const operations = async function (root, args, { lxdEndpoint, agent }, info) {
   const result = await lxd.operations.list({ lxdEndpoint, agent })
-  console.log(result)
   return result
 }
 
