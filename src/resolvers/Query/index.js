@@ -8,14 +8,7 @@ const containers = async function (
   { lxdEndpoint, agent, cloudInitComplete },
   info
 ) {
-  return lxd.instances.list({ lxdEndpoint, agent }).then((containers) => {
-    return containers.map((container) => {
-      return {
-        ...container,
-        cloudInitComplete: cloudInitComplete[container.name],
-      }
-    })
-  })
+  return lxd.instances.list({ lxdEndpoint, agent })
 }
 
 const profiles = async function (root, args, { lxdEndpoint, agent }, info) {

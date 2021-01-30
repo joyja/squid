@@ -39,7 +39,12 @@ const network = async function (parent, args, { lxdEndpoint, agent }, info) {
   }
 }
 
+const cloudInitComplete = function (parent, args, { cloudInitComplete }, info) {
+  return cloudInitComplete[parent.name]
+}
+
 module.exports = {
   profiles,
   network,
+  cloudInitComplete,
 }
