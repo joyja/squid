@@ -56,15 +56,7 @@ const create = async function ({ lxdEndpoint, agent, containerName, profile }) {
 }
 
 const drop = async function ({ lxdEndpoint, agent, containerName }) {
-  const container = await fetch(
-    `${lxdEndpoint}/1.0/instances/${containerName}`,
-    {
-      method: 'GET',
-      agent,
-    }
-  )
-    .then((result) => result.json())
-    .then((data) => data.metadata)
+  const container = await stop({ lxdEndpoint, agent, containerName })
   const operation = await fetch(
     `${lxdEndpoint}/1.0/instances/${containerName}`,
     {
