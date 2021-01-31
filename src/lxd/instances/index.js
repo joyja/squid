@@ -65,6 +65,11 @@ const drop = async function ({ lxdEndpoint, agent, containerName }) {
   )
     .then((result) => result.json())
     .then((data) => data.metadata)
+  const stopOperation = await stop({ lxdEndpoint, agent, containerName })
+  await fetch(`${lxdEndpoint}/1.0/operations/${stopOperation.id}/wait`, {
+    method: 'GET',
+    agent,
+  })
   const operation = await fetch(
     `${lxdEndpoint}/1.0/instances/${containerName}`,
     {
