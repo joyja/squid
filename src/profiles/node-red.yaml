@@ -1,0 +1,20 @@
+config:
+  user.user-data: |
+    #cloud-config
+    phone_home:
+      url: http://api2.lxd:3000/nodered-created/$INSTANCE_ID/
+      post:
+        - hostname
+    package_update: true
+    package_upgrade: true
+    runcmd:
+      - 'export HOME=/root'
+      - 'export USER=root'
+      - 'wget https://raw.githubusercontent.com/node-red/linux-installers/master/deb/update-nodejs-and-nodered'
+      - 'chmod +x update-nodejs-and-nodered'
+      - 'yes | ./update-nodejs-and-nodered'
+      - 'systemctl enable nodered.service'
+      - 'systemctl start nodered.service'
+description: Default LXD profile
+devices: {}
+name: node-red
