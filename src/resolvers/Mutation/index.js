@@ -24,7 +24,7 @@ const deleteContainer = async function (
   { lxdEndpoint, agent, cloudInitComplete },
   info
 ) {
-  const container = await lxd.instances.delete({
+  const container = await lxd.instances.drop({
     lxdEndpoint,
     agent,
     containerName: args.containerName,
