@@ -15,7 +15,21 @@ const createContainer = async function (
     profile: args.profile,
   })
   cloudInitComplete[container.name] = false
-  console.log(cloudInitComplete)
+  return container
+}
+
+const deleteContainer = async function (
+  root,
+  args,
+  { lxdEndpoint, agent, cloudInitComplete },
+  info
+) {
+  const container = await lxd.instances.delete({
+    lxdEndpoint,
+    agent,
+    containerName: args.containerName,
+  })
+  cloudInitComplete[container.name] = undefined
   return container
 }
 
@@ -120,6 +134,7 @@ const setInterfaceConfig = async function (root, args, context, info) {
 
 module.exports = {
   createContainer,
+  deleteContainer,
   startContainer,
   stopContainer,
   restartContainer,

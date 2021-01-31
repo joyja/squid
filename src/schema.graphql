@@ -112,6 +112,8 @@ type Query {
 type Mutation {
   """create a container"""
   createContainer(containerName: String!, profile: String!): Container
+  """delete a container"""
+  deleteContainer(containerName: String!): Container
   """start a container"""
   startContainer(containerName: String!): Container
   """stop a container"""

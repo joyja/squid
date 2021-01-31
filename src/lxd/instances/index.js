@@ -55,9 +55,34 @@ const create = async function ({ lxdEndpoint, agent, containerName, profile }) {
     .then((data) => data.metadata)
 }
 
+const drop = async function ({ lxdEndpoint, agent, containerName }) {
+  const container = await fetch(
+    `${lxdEndpoint}/1.0/instances/${containerName}`,
+    {
+      method: 'GET',
+      agent,
+    }
+  )
+    .then((result) => result.json())
+    .then((data) => data.metadata)
+  const operation = await fetch(
+    `${lxdEndpoint}/1.0/instances/${containerName}`,
+    {
+      method: 'DELETE',
+      agent,
+    }
+  )
+  await fetch(`${lxdEndpoint}/1.0/operations/${operation.id}/wait`, {
+    method: 'GET',
+    agent,
+  })
+  return container
+}
+
 module.exports = {
   list,
   create,
+  drop,
   start,
   stop,
   restart,
