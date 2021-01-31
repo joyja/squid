@@ -70,7 +70,7 @@ type Container {
   last_used_at: Datetime!
   location: String!
   type: String!
-  cloudInitComplete: Boolean!
+  cloudInitComplete: Boolean
 }
 
 type NetworkInterfaceConfig {
