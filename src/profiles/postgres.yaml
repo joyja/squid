@@ -68,9 +68,9 @@ config:
           default_text_search_config = 'pg_catalog.english'
 
           include_dir = 'conf.d'			# include files ending in '.conf' from
-      runcmd:
-        - mv /root/postgresql.conf /etc/postgresql/12/main/
-        - mv /root/pg_hba.conf /etc/postgresql/12/main/
+    runcmd:
+      - mv /root/postgresql.conf /etc/postgresql/12/main/
+      - mv /root/pg_hba.conf /etc/postgresql/12/main/
 description: Default LXD profile
 devices: {}
 name: postgres
