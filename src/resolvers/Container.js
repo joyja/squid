@@ -40,6 +40,9 @@ const network = async function (parent, args, { lxdEndpoint, agent }, info) {
 }
 
 const cloudInitComplete = function (parent, args, { cloudInitComplete }, info) {
+  if (cloudInitComplete[parent.name] === undefined) {
+    cloudInitComplete[parent.name] = true
+  }
   return cloudInitComplete[parent.name]
 }
 

@@ -28,6 +28,9 @@ let listenHost = process.env.FACTOTUM_HOST || 'localhost'
 let listenPort = process.env.FACTOTUM_PORT || 4000
 
 start = async function () {
+  //Initialize default profiles in LXD
+  await lxd.profiles.initializeDefaultProfiles({ lxdEndpoint, agent })
+  //populate cloudInitComplete object, to be used for creation status
   const containers = await lxd.instances.list({ lxdEndpoint, agent })
   const cloudInitComplete = {}
   containers.forEach((container) => {
