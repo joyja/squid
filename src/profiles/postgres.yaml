@@ -9,7 +9,7 @@ config:
     packages:
       - postgresql
     write_files:
-      - path: /etc/postgresql/12/main/pg_hba.conf
+      - path: /root/pg_hba.conf
         content: |
           local   all             postgres                                peer
           # TYPE  DATABASE        USER            ADDRESS                 METHOD
@@ -25,7 +25,7 @@ config:
           host    replication     all             127.0.0.1/32            md5
           host    replication     all             ::1/128                 md5
           host    all             all             0.0.0.0                 md5
-      - path: /etc/postgresql/12/main/postgresql.conf
+      - path: /root/postgresql.conf
         content: |
           data_directory = '/var/lib/postgresql/12/main'		# use data in another directory
           hba_file = '/etc/postgresql/12/main/pg_hba.conf'	# host-based authentication file
@@ -68,6 +68,9 @@ config:
           default_text_search_config = 'pg_catalog.english'
 
           include_dir = 'conf.d'			# include files ending in '.conf' from
+      runcmd:
+        - mv /root/postgresql.conf /etc/postgresql/12/main/
+        - mv /root/pg_hba.conf /etc/postgresql/12/main/
 description: Default LXD profile
 devices: {}
 name: postgres
