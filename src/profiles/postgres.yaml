@@ -780,6 +780,7 @@ config:
     runcmd:
       - mv /root/postgresql.conf /etc/postgresql/12/main/
       - mv /root/pg_hba.conf /etc/postgresql/12/main/
+      - service postgresql restart
 description: Default LXD profile
 devices: {}
 name: postgres
