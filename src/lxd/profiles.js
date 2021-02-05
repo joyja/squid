@@ -62,7 +62,15 @@ const initializeDefaultProfile = function ({
 }
 
 const initializeDefaultProfiles = async function ({ lxdEndpoint, agent }) {
-  const defaultProfileNames = ['tentacle', 'node-red', 'ignition', 'postgres']
+  const defaultProfileNames = [
+    'tentacle',
+    'node-red',
+    'ignition',
+    'postgres',
+    'grafana',
+    'codesys',
+    'mosquitto',
+  ]
   const existingProfiles = await list({ lxdEndpoint, agent })
   console.log(existingProfiles)
   for (profileName of defaultProfileNames) {

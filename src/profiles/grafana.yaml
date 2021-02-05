@@ -1,0 +1,12 @@
+config:
+  user.user-data: |
+    #cloud-config
+    phone_home:
+      url: http://_gateway:4000/phone-home/$INSTANCE_ID/
+      post:
+        - hostname
+      tries: 10
+    package_update: true
+    package_upgrade: true
+devices: {}
+name: grafana

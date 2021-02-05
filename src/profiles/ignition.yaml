@@ -2,7 +2,7 @@ config:
   user.user-data: |
     #cloud-config
     phone_home:
-      url: http://_gateway:4000/ignition-created/$INSTANCE_ID/
+      url: http://_gateway:4000/phone-home/$INSTANCE_ID/
       post:
         - hostname
       tries: 10
