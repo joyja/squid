@@ -65,7 +65,7 @@ const application = async function (
     'mosquitto',
     'nginx',
     'node-red',
-    'postgresql',
+    'postgres',
     'tentacle',
   ]
   return (
