@@ -68,12 +68,11 @@ const application = async function (
     'postgresql',
     'tentacle',
   ]
-  applications.forEach((application) => {
-    if (profilesResult.some((p) => p.name === application)) {
-      return application
-    }
-  })
-  return 'unknown'
+  return (
+    applications.find((application) => {
+      return profilesResult.some((p) => p.name === application)
+    }) || 'Uknown'
+  )
 }
 
 module.exports = {
