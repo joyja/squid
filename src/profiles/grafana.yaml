@@ -17,5 +17,7 @@ config:
       - apt-transport-https
       - software-properties-common
       - grafana-enterprise
+    runcmd:
+      - 'systemctl start grafana-server'
 devices: {}
 name: grafana
