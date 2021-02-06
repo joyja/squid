@@ -52,6 +52,12 @@ const application = async function (
   { lxdEndpoint, agent },
   info
 ) {
+  const profilesResult = await profiles(
+    parent,
+    args,
+    { lxdEndpoint, agent },
+    info
+  )
   const applications = [
     'grafana',
     'ignition',
@@ -63,7 +69,7 @@ const application = async function (
     'tentacle',
   ]
   applications.forEach((application) => {
-    if (parent.profiles.some((p) => p.name === application)) {
+    if (profilesResult.some((p) => p.name === application)) {
       return application
     }
   })
