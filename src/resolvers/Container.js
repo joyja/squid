@@ -46,7 +46,12 @@ const cloudInitComplete = function (parent, args, { cloudInitComplete }, info) {
   return cloudInitComplete[parent.name]
 }
 
-const application = async function (parent, args, context, info) {
+const application = async function (
+  parent,
+  args,
+  { lxdEndpoint, agent },
+  info
+) {
   const responses = await Promise.all(
     parent.profiles.map((p) =>
       fetch(`${lxdEndpoint}/1.0/profiles/${p}`, { agent: agent })
