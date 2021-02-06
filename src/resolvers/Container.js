@@ -62,11 +62,11 @@ const application = async function (
     'postgresql',
     'tentacle',
   ]
-  for (application of applications) {
+  applications.forEach((application) => {
     if (parent.profiles.some((p) => p.name === application)) {
       return application
     }
-  }
+  })
   return 'unknown'
 }
 
