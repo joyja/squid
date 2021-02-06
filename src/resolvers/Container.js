@@ -52,14 +52,6 @@ const application = async function (
   { lxdEndpoint, agent },
   info
 ) {
-  const responses = await Promise.all(
-    parent.profiles.map((p) =>
-      fetch(`${lxdEndpoint}/1.0/profiles/${p}`, { agent: agent })
-    )
-  )
-  const profilesResult = await Promise.all(
-    responses.map((r) => r.json())
-  ).then((result) => result.map((p) => p.metadata))
   const applications = [
     'grafana',
     'ignition',
@@ -71,7 +63,7 @@ const application = async function (
     'tentacle',
   ]
   for (application of applications) {
-    if (profilesResult.some((p) => p.name === application)) {
+    if (parent.profiles.some((p) => p.name === application)) {
       return application
     }
   }
