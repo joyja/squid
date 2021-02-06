@@ -71,6 +71,7 @@ type Container {
   location: String!
   type: String!
   cloudInitComplete: Boolean
+  application: String!
 }
 
 type NetworkInterfaceConfig {

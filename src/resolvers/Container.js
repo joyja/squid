@@ -46,8 +46,35 @@ const cloudInitComplete = function (parent, args, { cloudInitComplete }, info) {
   return cloudInitComplete[parent.name]
 }
 
+const application = async function (parent, args, context, info) {
+  const responses = await Promise.all(
+    parent.profiles.map((p) =>
+      fetch(`${lxdEndpoint}/1.0/profiles/${p}`, { agent: agent })
+    )
+  )
+  const profilesResult = await Promise.all(responses.map((r) => r.json()))
+  const profiles = profilesResult.map((p) => p.metadata)
+  const applications = [
+    'grafana',
+    'ignition',
+    'codesys',
+    'mosquitto',
+    'nginx',
+    'node-red',
+    'postgresql',
+    'tentacle',
+  ]
+  for (application of applications) {
+    if (profiles.some((p) => p.name === application)) {
+      return application
+    }
+  }
+  return 'unknown'
+}
+
 module.exports = {
   profiles,
   network,
   cloudInitComplete,
+  application,
 }

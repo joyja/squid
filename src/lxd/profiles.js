@@ -72,7 +72,6 @@ const initializeDefaultProfiles = async function ({ lxdEndpoint, agent }) {
     'mosquitto',
   ]
   const existingProfiles = await list({ lxdEndpoint, agent })
-  console.log(existingProfiles)
   for (profileName of defaultProfileNames) {
     if (existingProfiles.some((profile) => profile.includes(profileName))) {
       await initializeDefaultProfile({
