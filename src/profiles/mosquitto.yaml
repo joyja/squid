@@ -8,5 +8,8 @@ config:
       tries: 10
     package_update: true
     package_upgrade: true
+    packages:
+      - mosquitto
+      - mosquitto-clients
 devices: {}
 name: mosquitto
