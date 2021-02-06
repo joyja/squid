@@ -8,5 +8,14 @@ config:
       tries: 10
     package_update: true
     package_upgrade: true
+    apt:
+      sources:
+        grafana:
+          source: "deb https://packages.grafana.com/enterprise/deb stable main"
+          keyid: 2409 8CB6
+    packages:
+      - apt-transport-https
+      - software-properties-common
+      - grafana-enterprise
 devices: {}
 name: grafana
