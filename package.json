@@ -1,5 +1,5 @@
 {
-  "name": "@joyja/factotum",
+  "name": "@joyja/squid",
   "version": "0.0.0",
   "description": "Graphql API for managing IIOT containers",
   "main": "src/index.js",
@@ -37,12 +37,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/joyja/factotum.git"
+    "url": "git+https://github.com/joyja/squid.git"
   },
   "author": "James A. Joy",
   "license": "GPL-3.0",
   "bugs": {
-    "url": "https://github.com/joyja/factotum/issues"
+    "url": "https://github.com/joyja/squid/issues"
   },
-  "homepage": "https://github.com/joyja/factotum#readme"
+  "homepage": "https://github.com/joyja/squid#readme"
 }
