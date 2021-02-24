@@ -123,7 +123,7 @@ start = async function (dbFilename) {
         )
       }
       await User.initialize(context.db, context.pubsub)
-      await User.instances[0].setUsername('admin')
+      await User.instances[0].setPassword('password')
       await context.db.get(`PRAGMA user_version = ${desiredUserVersion}`)
       resolve()
     })

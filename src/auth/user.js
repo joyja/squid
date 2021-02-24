@@ -93,7 +93,7 @@ class User extends Model {
   }
   async setPassword(newValue) {
     const password = await bcrypt.hash(newValue, 10)
-    return this.update(this.id, `password`, password, User).then((result) => {
+    return this.update(this.id, `password`, password).then((result) => {
       this._password = password
     })
   }
