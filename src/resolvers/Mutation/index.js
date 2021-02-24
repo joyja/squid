@@ -8,7 +8,7 @@ async function login(root, args, context, info) {
 }
 
 async function changePassword(root, args, context, info) {
-  return User.changePassword(context, args.oldPassword, args.newPassword)
+  return User.changePassword(context, args.newPassword, args.newPasswordConfirm)
 }
 
 const createContainer = async function (root, args, context, info) {

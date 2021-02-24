@@ -74,11 +74,13 @@ class User extends Model {
       throw new AuthenticationError(errorMessage)
     }
   }
-  static async changePassword(context, oldPassword, newPassword) {
+  static async changePassword(context, newPassword, newPasswordConfirm) {
     const user = await User.getUserFromContext(context)
-    const valid = await bcrypt.compare(oldPassword, user.password)
+    const valid = newPassword === newPasswordConfirm
     if (!valid) {
-      throw new Error('Invalid old password.')
+      const errorMessage = 'Password and Password Confirmation do not match.'
+      logger.error(errorMessage)
+      throw new Error(errorMessage)
     } else {
       await user.setPassword(newPassword)
       return user

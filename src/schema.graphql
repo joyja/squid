@@ -131,7 +131,7 @@ type Mutation {
   and information about the user that successfully logged in."""
   login(username: String!, password: String!): AuthPayload
   """Allows the user to change their password"""
-  changePassword(oldPassword: String!, newPassword: String!): User
+  changePassword(newPassword: String!, newPasswordConfirm: String!): User
   """create a container"""
   createContainer(containerName: String!, profile: String!): Container
   """delete a container"""
