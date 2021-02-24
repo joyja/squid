@@ -13,7 +13,8 @@ const containers = async function (root, args, context, info) {
   return lxd.instances.list({ lxdEndpoint, agent })
 }
 
-const profiles = async function (root, args, { lxdEndpoint, agent }, info) {
+const profiles = async function (root, args, context, info) {
+  const { lxdEndpoint, agent } = context
   await User.getUserFromContext(context)
   return fetch(`${lxdEndpoint}/1.0/profiles`, {
     agent,
