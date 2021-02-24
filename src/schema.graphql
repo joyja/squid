@@ -108,6 +108,8 @@ type AuthPayload {
 
 """Read only queries"""
 type Query {
+  """Gets user based on authentication header and returns relevant data"""
+  user: User
   """Returns some information about this application."""
   info: String!
   """Returns a list of containers and their properties"""

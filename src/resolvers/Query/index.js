@@ -3,6 +3,10 @@ const { network } = require('../../os')
 const lxd = require('../../lxd')
 const { User } = require('../../auth')
 
+async function user(root, args, context, info) {
+  return User.getUserFromContext(context)
+}
+
 const containers = async function (root, args, context, info) {
   const { lxdEndpoint, agent, cloudInitComplete } = context
   await User.getUserFromContext(context)
@@ -65,6 +69,7 @@ const networkInterfaceConfigs = async function (root, args, context, info) {
 
 module.exports = {
   info: () => `IIOT application container manger.`,
+  user,
   containers,
   profiles,
   operations,
