@@ -92,5 +92,9 @@ const initializeDefaultProfiles = async function ({ lxdEndpoint, agent }) {
 }
 
 module.exports = {
+  list,
+  create,
+  update,
+  get,
   initializeDefaultProfiles,
 }

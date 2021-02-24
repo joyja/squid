@@ -1,13 +1,19 @@
 const fetch = require('node-fetch')
 const { network } = require('../../os')
 const lxd = require('../../lxd')
+const { User } = require('../../auth')
 
-const createContainer = async function (
-  root,
-  args,
-  { lxdEndpoint, agent, cloudInitComplete },
-  info
-) {
+async function login(root, args, context, info) {
+  return User.login(args.username, args.password)
+}
+
+async function changePassword(root, args, context, info) {
+  return User.changePassword(context, args.oldPassword, args.newPassword)
+}
+
+const createContainer = async function (root, args, context, info) {
+  const { lxdEndpoint, agent, cloudInitComplete } = context
+  await User.getUserFromContext(context)
   const container = await lxd.instances.create({
     lxdEndpoint,
     agent,
@@ -18,12 +24,9 @@ const createContainer = async function (
   return container
 }
 
-const deleteContainer = async function (
-  root,
-  args,
-  { lxdEndpoint, agent, cloudInitComplete },
-  info
-) {
+const deleteContainer = async function (root, args, context, info) {
+  const { lxdEndpoint, agent, cloudInitComplete } = context
+  await User.getUserFromContext(context)
   const container = await lxd.instances.drop({
     lxdEndpoint,
     agent,
@@ -33,12 +36,9 @@ const deleteContainer = async function (
   return container
 }
 
-const startContainer = async function (
-  root,
-  args,
-  { lxdEndpoint, agent },
-  info
-) {
+const startContainer = async function (root, args, context, info) {
+  const { lxdEndpoint, agent } = context
+  await User.getUserFromContext(context)
   return lxd.instances.start({
     lxdEndpoint,
     agent,
@@ -46,12 +46,9 @@ const startContainer = async function (
   })
 }
 
-const stopContainer = async function (
-  root,
-  args,
-  { lxdEndpoint, agent },
-  info
-) {
+const stopContainer = async function (root, args, context, info) {
+  const { lxdEndpoint, agent } = context
+  await User.getUserFromContext(context)
   return lxd.instances.stop({
     lxdEndpoint,
     agent,
@@ -59,12 +56,9 @@ const stopContainer = async function (
   })
 }
 
-const restartContainer = async function (
-  root,
-  args,
-  { lxdEndpoint, agent },
-  info
-) {
+const restartContainer = async function (root, args, context, info) {
+  const { lxdEndpoint, agent } = context
+  await User.getUserFromContext(context)
   return lxd.instances.restart({
     lxdEndpoint,
     agent,
@@ -72,12 +66,9 @@ const restartContainer = async function (
   })
 }
 
-const setDescription = async function (
-  root,
-  args,
-  { lxdEndpoint, agent },
-  info
-) {
+const setDescription = async function (root, args, context, info) {
+  const { lxdEndpoint, agent } = context
+  await User.getUserFromContext(context)
   await fetch(`${lxdEndpoint}/1.0/instances/${args.containerName}`, {
     method: 'PATCH',
     agent,
@@ -92,12 +83,9 @@ const setDescription = async function (
     .then((data) => data.metadata)
 }
 
-const createProfile = async function (
-  root,
-  args,
-  { lxdEndpoint, agent },
-  info
-) {
+const createProfile = async function (root, args, context, info) {
+  const { lxdEndpoint, agent } = context
+  await User.getUserFromContext(context)
   await fetch(`${lxdEndpoint}/1.0/profiles`, {
     method: 'POST',
     agent,
@@ -112,6 +100,7 @@ const createProfile = async function (
 }
 
 const setInterfaceConfig = async function (root, args, context, info) {
+  await User.getUserFromContext(context)
   const config = {
     name: args.name,
     dhcp4: args.dhcp,
@@ -133,6 +122,8 @@ const setInterfaceConfig = async function (root, args, context, info) {
 }
 
 module.exports = {
+  login,
+  changePassword,
   createContainer,
   deleteContainer,
   startContainer,

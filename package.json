@@ -5,14 +5,19 @@
   "main": "src/index.js",
   "dependencies": {
     "apollo-server-express": "^2.19.2",
+    "bcryptjs": "^2.4.3",
     "date-fns": "^2.16.1",
     "express": "^4.17.1",
     "graphql-tag": "^2.11.0",
     "is-cidr": "^4.0.2",
     "is-ip": "^3.1.0",
     "js-yaml": "^4.0.0",
+    "jsonwebtoken": "^8.5.1",
     "make-promises-safe": "^5.1.0",
-    "nodemon": "^2.0.7"
+    "nodemon": "^2.0.7",
+    "sqlite3": "^5.0.2",
+    "uuid": "^8.3.1",
+    "winston": "^3.3.3"
   },
   "devDependencies": {
     "coveralls": "^3.1.0",

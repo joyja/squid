@@ -91,3 +91,6 @@ sw.*
 
 #certificates (for LXD authentication)
 certificates/
+
+#database
+/database*

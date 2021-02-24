@@ -1,17 +1,16 @@
 const fetch = require('node-fetch')
 const { network } = require('../../os')
 const lxd = require('../../lxd')
+const { User } = require('../../auth')
 
-const containers = async function (
-  root,
-  args,
-  { lxdEndpoint, agent, cloudInitComplete },
-  info
-) {
+const containers = async function (root, args, context, info) {
+  const { lxdEndpoint, agent, cloudInitComplete } = context
+  await User.getUserFromContext(context)
   return lxd.instances.list({ lxdEndpoint, agent })
 }
 
 const profiles = async function (root, args, { lxdEndpoint, agent }, info) {
+  await User.getUserFromContext(context)
   return fetch(`${lxdEndpoint}/1.0/profiles`, {
     agent,
   }).then((result) => {
@@ -29,12 +28,15 @@ const profiles = async function (root, args, { lxdEndpoint, agent }, info) {
   })
 }
 
-const operations = async function (root, args, { lxdEndpoint, agent }, info) {
+const operations = async function (root, args, context, info) {
+  const { lxdEndpoint, agent } = context
+  await User.getUserFromContext(context)
   const result = await lxd.operations.list({ lxdEndpoint, agent })
   return result
 }
 
 const networkInterfaces = async function (root, args, context, info) {
+  await User.getUserFromContext(context)
   const ifaces = await network.getInterfaces()
   const defaultRoutes = await network.getDefaultRoutes()
   return ifaces.map((iface) => {
@@ -49,6 +51,7 @@ const networkInterfaces = async function (root, args, context, info) {
 }
 
 const networkInterfaceConfigs = async function (root, args, context, info) {
+  await User.getUserFromContext(context)
   const config = network.getConfig()[0]
   const result = Object.keys(config.contents.network.ethernets).map((key) => {
     return {
