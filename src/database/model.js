@@ -99,13 +99,21 @@ class Model {
           return this[`_${field.colName}`]
         },
       })
-      this.prototype[
-        `set${field.colName.charAt(0).toUpperCase() + field.colName.slice(1)}`
-      ] = async function (newValue) {
-        return this.update(this._id, field.colName, newValue).then((result) => {
-          this[`_${field.colName}`] = newValue
-          return newValue
-        })
+      if (
+        this.prototype[
+          `set${field.colName.charAt(0).toUpperCase() + field.colName.slice(1)}`
+        ] === undefined
+      ) {
+        this.prototype[
+          `set${field.colName.charAt(0).toUpperCase() + field.colName.slice(1)}`
+        ] = async function (newValue) {
+          return this.update(this._id, field.colName, newValue).then(
+            (result) => {
+              this[`_${field.colName}`] = newValue
+              return newValue
+            }
+          )
+        }
       }
     })
     await this.createTable()
