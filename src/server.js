@@ -58,7 +58,6 @@ start = async function (dbFilename) {
     })
   }
 
-  console.log(await lxd.isInit({ lxdEndpoint, agent }))
   //Initialize default profiles in LXD
   await lxd.profiles.initializeDefaultProfiles({ lxdEndpoint, agent })
   //populate cloudInitComplete object, to be used for creation status

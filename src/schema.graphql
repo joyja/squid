@@ -6,6 +6,7 @@ type User {
   username: String!
 }
 
+"""A device as defined within an LXD container."""
 type Device {
   id: String!
   name: String
@@ -108,10 +109,12 @@ type AuthPayload {
 
 """Read only queries"""
 type Query {
-  """Gets user based on authentication header and returns relevant data"""
-  user: User
   """Returns some information about this application."""
   info: String!
+  """Gets user based on authentication header and returns relevant data"""
+  user: User
+  """Gets list of users"""
+  users: [User!]!
   """Returns a list of containers and their properties"""
   containers: [Container!]!
   """List of current operations"""

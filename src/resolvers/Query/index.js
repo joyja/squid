@@ -7,6 +7,11 @@ async function user(root, args, context, info) {
   return User.getUserFromContext(context)
 }
 
+async function users(root, args, context, info) {
+  await User.getUserFromContext(context)
+  return User.instances
+}
+
 const containers = async function (root, args, context, info) {
   const { lxdEndpoint, agent, cloudInitComplete } = context
   await User.getUserFromContext(context)
@@ -71,6 +76,7 @@ const networkInterfaceConfigs = async function (root, args, context, info) {
 module.exports = {
   info: () => `IIOT application container manger.`,
   user,
+  users,
   containers,
   profiles,
   operations,
