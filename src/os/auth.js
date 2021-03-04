@@ -1,4 +1,6 @@
 const { exec } = require('child_process')
+const logger = require('../logger')
+const { user } = require('../resolvers/Query')
 
 const getUsers = async function () {
   const ignore = [
@@ -48,37 +50,51 @@ const getUsers = async function () {
 }
 
 const createUser = async function (username, password) {
-  return new Promise((resolve, reject) => {
-    exec(
-      `sudo useradd -m -p $(openssl passwd -1 ${password}) -G sudo -s /bin/bash ${username}`,
-      (err, stdout, stderr) => {
-        if (err) {
-          reject(err)
-        } else if (stderr) {
-          reject(stderr)
-        } else {
-          resolve({ username })
+  const users = getUsers()
+  if (!user.includes(username)) {
+    return new Promise((resolve, reject) => {
+      exec(
+        `sudo useradd -m -p $(openssl passwd -1 ${password}) -G sudo -s /bin/bash ${username}`,
+        (err, stdout, stderr) => {
+          if (err) {
+            reject(err)
+          } else if (stderr) {
+            reject(stderr)
+          } else {
+            resolve({ username })
+          }
         }
-      }
-    )
-  })
+      )
+    })
+  } else {
+    const errorMessage = `OS User with username ${username} already exists.`
+    logger.error(errorMessage)
+    throw new Error(errorMessage)
+  }
 }
 
 const deleteUser = async function (username) {
-  return new Promise((resolve, reject) => {
-    exec(
-      `sudo userdel ${username} && sudo rm -r /home/${username}`,
-      (err, stdout, stderr) => {
-        if (err) {
-          reject(err)
-        } else if (stderr) {
-          reject(stderr)
-        } else {
-          resolve({ username })
+  const users = getUsers()
+  if (users.includes(username)) {
+    return new Promise((resolve, reject) => {
+      exec(
+        `sudo userdel ${username} && sudo rm -r /home/${username}`,
+        (err, stdout, stderr) => {
+          if (err) {
+            reject(err)
+          } else if (stderr) {
+            reject(stderr)
+          } else {
+            resolve({ username })
+          }
         }
-      }
-    )
-  })
+      )
+    })
+  } else {
+    const errorMessage = `OS User with username ${username} does not exist.`
+    logger.error(errorMessage)
+    throw new Error(errorMessage)
+  }
 }
 
 module.exports = {
