@@ -2,6 +2,7 @@ const { exec } = require('child_process')
 
 const getUsers = async function () {
   const ignore = [
+    '',
     'root',
     'daemon',
     'bin',
