@@ -51,7 +51,7 @@ const getUsers = async function () {
 
 const createUser = async function (username, password) {
   const users = await getUsers()
-  if (!user.includes(username)) {
+  if (!users.includes(username)) {
     return new Promise((resolve, reject) => {
       exec(
         `sudo useradd -m -p $(openssl passwd -1 ${password}) -G sudo -s /bin/bash ${username}`,
