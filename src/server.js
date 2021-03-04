@@ -10,6 +10,7 @@ const resolvers = require('./resolvers')
 const lxd = require('./lxd')
 const { User } = require('./auth')
 const { executeQuery } = require('./database')
+const os = require('./os')
 
 const desiredUserVersion = 1
 

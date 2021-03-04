@@ -74,6 +74,21 @@ class User extends Model {
       throw new AuthenticationError(errorMessage)
     }
   }
+  static async changeUsername(context, newUsername) {
+    const user = await User.getUserFromContext(context)
+    const valid = !User.exists({ uername: newUsername })
+    if (!valid) {
+      const errorMessage =
+        user.username === newUsername
+          ? 'This is already your username'
+          : 'A user already exists with this username'
+      logger.error(errorMessage)
+      throw new Error(errorMessage)
+    } else {
+      await user.setUsername(newUsername)
+      return user
+    }
+  }
   static async changePassword(context, newPassword, newPasswordConfirm) {
     const user = await User.getUserFromContext(context)
     const valid = newPassword === newPasswordConfirm

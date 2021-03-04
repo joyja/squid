@@ -1,5 +1,5 @@
 const fetch = require('node-fetch')
-const { network } = require('../../os')
+const { network, auth } = require('../../os')
 const lxd = require('../../lxd')
 const { User } = require('../../auth')
 
@@ -11,6 +11,21 @@ async function users(root, args, context, info) {
   await User.getUserFromContext(context)
   return User.instances
 }
+
+// OS Queries
+
+async function osUsers(root, args, context, info) {
+  await User.getUserFromContext(context)
+  return auth.getUsers().then((result) => {
+    return result.map((username) => {
+      return {
+        username,
+      }
+    })
+  })
+}
+
+//Container Queries
 
 const containers = async function (root, args, context, info) {
   const { lxdEndpoint, agent, cloudInitComplete } = context
@@ -77,6 +92,7 @@ module.exports = {
   info: () => `IIOT application container manger.`,
   user,
   users,
+  osUsers,
   containers,
   profiles,
   operations,

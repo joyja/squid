@@ -1,5 +1,5 @@
 const fetch = require('node-fetch')
-const { network } = require('../../os')
+const { network, auth } = require('../../os')
 const lxd = require('../../lxd')
 const { User } = require('../../auth')
 
@@ -7,10 +7,25 @@ async function login(root, args, context, info) {
   return User.login(args.username, args.password)
 }
 
+async function changeUsername(root, args, context, info) {
+  return User.changeUsername(context, args.newUsername)
+}
+
 async function changePassword(root, args, context, info) {
   return User.changePassword(context, args.newPassword, args.newPasswordConfirm)
 }
 
+// OS Mutations
+
+async function createOSUser(root, args, context, info) {
+  return auth.createUser(args.username, args.password)
+}
+
+async function deleteOSUser(root, args, context, info) {
+  return auth.deleteUser(args.username)
+}
+
+// Container Mutaitons
 const createContainer = async function (root, args, context, info) {
   const { lxdEndpoint, agent, cloudInitComplete } = context
   await User.getUserFromContext(context)
@@ -123,7 +138,10 @@ const setInterfaceConfig = async function (root, args, context, info) {
 
 module.exports = {
   login,
+  changeUsername,
   changePassword,
+  createOSUser,
+  deleteOSUser,
   createContainer,
   deleteContainer,
   startContainer,

@@ -1,5 +1,6 @@
 const logger = require('../logger')
 
+// The global promisified execute query method.
 const executeQuery = function (db, sql, params = [], firstRowOnly = false) {
   if (process.env.SQUID_DEBUG) {
     console.log(new Date().toISOString())
@@ -22,6 +23,7 @@ const executeQuery = function (db, sql, params = [], firstRowOnly = false) {
   })
 }
 
+// The global promisified execute update method.
 const executeUpdate = function (db, sql, params = []) {
   if (process.env.SQUID_DEBUG) {
     console.log(new Date().toISOString())
@@ -40,16 +42,19 @@ const executeUpdate = function (db, sql, params = []) {
 }
 
 class Model {
+  // SQL update method for convenience when you just want to use this model's database connection.
   static executeUpdate(sql, params) {
     return executeUpdate(this.db, sql, params).catch((error) => {
       logger.error(error.message, { message: `sql: ${sql}` })
     })
   }
+  // Generic SQL query method for convenience when you just want to use this model's database connection.
   static executeQuery(sql, params, firstRowOnly) {
     return executeQuery(this.db, sql, params, firstRowOnly).catch((error) => {
       logger.error(error, { message: `sql: ${sql}` })
     })
   }
+  // Creates the table in the database if it doesn't already exist per the fields property.
   static async createTable() {
     // fields should be formatted { colName, colType } for typical columns
     // fields should be formatted { colName, colRef, onDelete } for foreign key
@@ -78,6 +83,8 @@ class Model {
     }
     return result
   }
+  // Checks the database version, whether the table exists, and sets the appropriate properties so children can react accordingly in their initialize states.
+  // This is creates the default getters and setters for fields (if they don't already exist on the child constructor)
   static async initialize(db, pubsub) {
     this.initialized = true
     this.db = db
@@ -119,6 +126,7 @@ class Model {
     await this.createTable()
     return this.getAll()
   }
+  // The prototype needs to be initialized to perform some checks and actions before it is used. We use this to through an error if things aren't done in the right order.
   static checkInitialized() {
     if (!this.initialized) {
       throw Error(
@@ -126,6 +134,15 @@ class Model {
       )
     }
   }
+  // Looks through instances to see if there are any instances where the criteria key/value pairs match the same key/value pairs in the instance.
+  static exists(criteria) {
+    return this.instances.some((instance) => {
+      return Object.keys(criteria).every((key) => {
+        return criteria[key] === instance[key]
+      })
+    })
+  }
+  // This retreives instances from memory if there is one loaded with the appropriate ID. If one doesn't exist it will check the database.
   static async get(selector, ignoreExisting = false) {
     this.checkInitialized()
     let model = undefined
@@ -146,6 +163,7 @@ class Model {
       )
     }
   }
+  // Clears instances loaded into memory and retrieves all the instances from the database.
   static async getAll() {
     this.checkInitialized()
     let sql = `SELECT id FROM ${this.table}`
@@ -159,6 +177,7 @@ class Model {
     this.instances = instances
     return instances
   }
+  // Create an instance in the database and load it into memory.
   static async create(fields) {
     this.checkInitialized()
     const sql = `INSERT INTO ${this.table} ("${Object.keys(fields).join(
@@ -168,6 +187,7 @@ class Model {
     const result = await this.executeUpdate(sql, params)
     return this.get(result.lastID, false)
   }
+  // delete an instance from the databse and in memory.
   static async delete(selector) {
     this.checkInitialized()
     const sql = `DELETE FROM ${this.table} WHERE id=?`
@@ -177,6 +197,7 @@ class Model {
     })
     return selector
   }
+  // retrieves and instance by id from memory.
   static findById(id) {
     this.checkInitialized()
     return this.instances.find((instance) => {
@@ -210,6 +231,7 @@ class Model {
       )
     }
   }
+  // initialize the instance: pull the fields from the database and initialize the _fieldName properties.
   async init() {
     const sql = `SELECT * FROM ${this.constructor.table} WHERE id=?`
     let result
@@ -237,6 +259,7 @@ class Model {
     })
     return result[0]
   }
+  // Checks if the instance has been initialized. Used to make sure things are setup and accessed in the appopriate order.
   checkInit() {
     if (!this.initialized) {
       throw Error(
@@ -244,15 +267,18 @@ class Model {
       )
     }
   }
+  // Update a field value in the database and in memory.
   update(selector, field, value) {
     const sql = `UPDATE ${this.constructor.table} SET "${field}"=? WHERE id=?`
     const params = [value, selector]
     return this.constructor.executeUpdate(sql, params).then((result) => value)
   }
+  // Delete this instance (using the constructors delete function)
   async delete() {
     await this.constructor.delete(this.id)
     return this
   }
+  // The id getter. It just makes sure the models initialized before the field is accessed.
   get id() {
     this.checkInit()
     return this._id

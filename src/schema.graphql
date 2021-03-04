@@ -1,8 +1,28 @@
 scalar Datetime
+enum Permission {
+  CONTAINER_ADMIN
+  USER_ADMIN
+  OS_USER_ADMIN
+  OS_NETWORK_ADMIN
+}
+
+"""An authorized ssh key. Used to allow users to access a container or the root operating system."""
+type AuthorizedKey {
+  """line number in the authorized keys file"""
+  line: Int!
+  key: String!
+}
 
 """Credentials used to identify who is logging into the gateway."""
 type User {
   id: ID!
+  username: String!
+  sshKey: String!
+  authorizedKeys: [AuthorizedKey!]!
+}
+
+"""Credentials used to log into the operating system (via ssh, for example)."""
+type OSUser {
   username: String!
 }
 
@@ -115,6 +135,8 @@ type Query {
   user: User
   """Gets list of users"""
   users: [User!]!
+  """Gets list of OS Users"""
+  osUsers: [OSUser!]!
   """Returns a list of containers and their properties"""
   containers: [Container!]!
   """List of current operations"""
@@ -133,8 +155,14 @@ type Mutation {
   """If a valid username and password is provided, this will return an auth payload with a java web token to be used for future requests 
   and information about the user that successfully logged in."""
   login(username: String!, password: String!): AuthPayload
+  """Change username"""
+  changeUsername(newUsername: String!): User
   """Allows the user to change their password"""
   changePassword(newPassword: String!, newPasswordConfirm: String!): User
+  """Create an OS User"""
+  createOSUser(username: String!, password: String!): OSUser
+  """Delete an OS User"""
+  deleteOSUser(username: String!): OSUser
   """create a container"""
   createContainer(containerName: String!, profile: String!): Container
   """delete a container"""
