@@ -50,7 +50,7 @@ const getUsers = async function () {
 }
 
 const createUser = async function (username, password) {
-  const users = getUsers()
+  const users = await getUsers()
   if (!user.includes(username)) {
     return new Promise((resolve, reject) => {
       exec(
@@ -74,7 +74,7 @@ const createUser = async function (username, password) {
 }
 
 const deleteUser = async function (username) {
-  const users = getUsers()
+  const users = await getUsers()
   if (users.includes(username)) {
     return new Promise((resolve, reject) => {
       exec(
