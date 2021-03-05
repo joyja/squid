@@ -2,6 +2,7 @@ const fetch = require('node-fetch')
 const { network, auth } = require('../../os')
 const lxd = require('../../lxd')
 const { User } = require('../../auth')
+const logger = require('../../logger')
 
 async function login(root, args, context, info) {
   return User.login(args.username, args.password)
@@ -15,10 +16,26 @@ async function changePassword(root, args, context, info) {
   return User.changePassword(context, args.newPassword, args.newPasswordConfirm)
 }
 
+async function createUser(root, args, context, info) {
+  if (args.password === args.passwordConfirm) {
+    return User.create(args.username)
+  } else {
+    const errorMessage = 'Password and password confirmation are not the same.'
+    logger.error(errorMessage)
+    throw new Error(errorMessage)
+  }
+}
+
 // OS Mutations
 
 async function createOSUser(root, args, context, info) {
-  return auth.createUser(args.username, args.password)
+  if (args.password === args.passwordConfirm) {
+    return auth.createUser(args.username, args.password)
+  } else {
+    const errorMessage = 'Password and password confirmation are not the same.'
+    logger.error(errorMessage)
+    throw new Error(errorMessage)
+  }
 }
 
 async function deleteOSUser(root, args, context, info) {
@@ -148,6 +165,7 @@ module.exports = {
   login,
   changeUsername,
   changePassword,
+  createUser,
   createOSUser,
   deleteOSUser,
   addAuthorizedKey,

@@ -159,8 +159,10 @@ type Mutation {
   changeUsername(newUsername: String!): User
   """Allows the user to change their password"""
   changePassword(newPassword: String!, newPasswordConfirm: String!): User
+  """Create an User"""
+  createUser(username: String!, password: String!, passwordConfirm: String!): User
   """Create an OS User"""
-  createOSUser(username: String!, password: String!): OSUser
+  createOSUser(username: String!, password: String!, passwordConfirm: String!): OSUser
   """Delete an OS User"""
   deleteOSUser(username: String!): OSUser
   """"Add an authorized SSH key to a user"""

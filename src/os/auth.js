@@ -57,7 +57,7 @@ const createUser = async function (username, password) {
   if (!users.includes(username)) {
     return new Promise((resolve, reject) => {
       exec(
-        `sudo useradd -m -p $(openssl passwd -1 ${password}) -G sudo -s /bin/bash ${username}`,
+        `sudo useradd -m -p $(openssl passwd -1 ${password}) -G sudo -s /bin/bash ${username} && sudo -u ${username} mkdir /home/${username}/.ssh && sudo -u ${username} ssh-keygen -f /home/${username}/.ssh/id_rsa -N "" && sudo -u ${username} touch /home/${username}/.ssh/authorized_keys`,
         (err, stdout, stderr) => {
           if (err) {
             reject(err)
@@ -140,7 +140,7 @@ const addAuthorizedKey = async function (username, key) {
   if (users.includes(username)) {
     return new Promise((resolve, reject) => {
       exec(
-        `echo "${key}" >> /home/${username}/.ssh/authorized_keys`,
+        `sudo -u ${username} bash -c 'echo "${key}" >> /home/${username}/.ssh/authorized_keys'`,
         async (err, stdout, stderr) => {
           if (err) {
             reject(err)
@@ -173,7 +173,7 @@ const deleteAuthorizedKey = async function (username, line) {
   if (users.includes(username)) {
     return new Promise((resolve, reject) => {
       exec(
-        `sed -i '${line}d' /home/${username}/.ssh/authorized_keys`,
+        `sudo -u ${username} sed -i '${line}d' /home/${username}/.ssh/authorized_keys`,
         (err, stdout, stderr) => {
           if (err) {
             reject(err)
