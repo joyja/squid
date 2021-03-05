@@ -25,7 +25,15 @@ async function deleteOSUser(root, args, context, info) {
   return auth.deleteUser(args.username)
 }
 
-// Container Mutaitons
+async function addAuthorizedKey(root, args, context, info) {
+  return auth.addAuthorizedKey(args.username, args.key)
+}
+
+async function deleteAuthorizedKey(root, args, context, info) {
+  return auth.deleteAuthorizedKey(args.username, args.line)
+}
+
+// Container Mutations
 const createContainer = async function (root, args, context, info) {
   const { lxdEndpoint, agent, cloudInitComplete } = context
   await User.getUserFromContext(context)
@@ -142,6 +150,8 @@ module.exports = {
   changePassword,
   createOSUser,
   deleteOSUser,
+  addAuthorizedKey,
+  deleteAuthorizedKey,
   createContainer,
   deleteContainer,
   startContainer,

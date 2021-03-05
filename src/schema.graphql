@@ -17,13 +17,13 @@ type AuthorizedKey {
 type User {
   id: ID!
   username: String!
-  sshKey: String!
-  authorizedKeys: [AuthorizedKey!]!
 }
 
 """Credentials used to log into the operating system (via ssh, for example)."""
 type OSUser {
   username: String!
+  sshKey: String!
+  authorizedKeys: [AuthorizedKey!]!
 }
 
 """A device as defined within an LXD container."""
@@ -163,6 +163,10 @@ type Mutation {
   createOSUser(username: String!, password: String!): OSUser
   """Delete an OS User"""
   deleteOSUser(username: String!): OSUser
+  """"Add an authorized SSH key to a user"""
+  addAuthorizedKey(username: String!, key: String!): AuthorizedKey
+  """"Delete an authorized SSH key from a user"""
+  deleteAuthorizedKey(username: String!, line: Int!): AuthorizedKey
   """create a container"""
   createContainer(containerName: String!, profile: String!): Container
   """delete a container"""
