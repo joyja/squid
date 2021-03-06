@@ -193,7 +193,7 @@ class Model {
     const sql = `DELETE FROM ${this.table} WHERE id=?`
     await this.executeUpdate(sql, [selector])
     this.instances = this.instances.filter((instance) => {
-      return instance._id !== selector
+      return `${instance._id}` !== `${selector}`
     })
     return selector
   }

@@ -161,6 +161,8 @@ type Mutation {
   changePassword(newPassword: String!, newPasswordConfirm: String!): User
   """Create an User"""
   createUser(username: String!, password: String!, passwordConfirm: String!): User
+  """Delete an User"""
+  deleteUser(id: ID!): User
   """Create an OS User"""
   createOSUser(username: String!, password: String!, passwordConfirm: String!): OSUser
   """Delete an OS User"""

@@ -17,6 +17,7 @@ async function changePassword(root, args, context, info) {
 }
 
 async function createUser(root, args, context, info) {
+  User.getUserFromContext(context)
   if (args.password === args.passwordConfirm) {
     return User.create(args.username, args.password)
   } else {
@@ -26,9 +27,23 @@ async function createUser(root, args, context, info) {
   }
 }
 
+async function deleteUser(root, args, context, info) {
+  const user = User.getUserFromContext(context)
+  const deletedUser = User.findById(args.id)
+  if (deletedUser) {
+    await User.delete(args.id)
+    return deletedUser
+  } else {
+    const errorMessage = `User with id ${args.id} does not exist.`
+    logger.error(errorMessage)
+    throw new Error(errorMessage)
+  }
+}
+
 // OS Mutations
 
 async function createOSUser(root, args, context, info) {
+  User.getUserFromContext(context)
   if (args.password === args.passwordConfirm) {
     return auth.createUser(args.username, args.password)
   } else {
@@ -39,6 +54,7 @@ async function createOSUser(root, args, context, info) {
 }
 
 async function deleteOSUser(root, args, context, info) {
+  User.getUserFromContext(context)
   return auth.deleteUser(args.username)
 }
 
@@ -166,6 +182,7 @@ module.exports = {
   changeUsername,
   changePassword,
   createUser,
+  deleteUser,
   createOSUser,
   deleteOSUser,
   addAuthorizedKey,
