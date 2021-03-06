@@ -167,26 +167,35 @@ const addAuthorizedKey = async function (username, key) {
 const deleteAuthorizedKey = async function (username, line) {
   const users = await getUsers()
   const authorizedKeys = await getAuthorizedKeys(username)
-  const selectedAuthorizedKey = authorizedKeys.find((authorizedKey) => {
-    return (authorizedKey.line = line)
-  })
-  if (users.includes(username)) {
-    return new Promise((resolve, reject) => {
-      exec(
-        `sudo -u ${username} sed -i '${line}d' /home/${username}/.ssh/authorized_keys`,
-        (err, stdout, stderr) => {
-          if (err) {
-            reject(err)
-          } else if (stderr) {
-            reject(stderr)
-          } else {
-            resolve(selectedAuthorizedKey)
-          }
-        }
-      )
+  if (authorizedKeys.length > 0 && authorizedKeys.length <= line) {
+    const selectedAuthorizedKey = authorizedKeys.find((authorizedKey) => {
+      return (authorizedKey.line = line)
     })
+    if (users.includes(username)) {
+      return new Promise((resolve, reject) => {
+        exec(
+          `sudo -u ${username} sed -i '${line}d' /home/${username}/.ssh/authorized_keys`,
+          (err, stdout, stderr) => {
+            if (err) {
+              reject(err)
+            } else if (stderr) {
+              reject(stderr)
+            } else {
+              resolve(selectedAuthorizedKey)
+            }
+          }
+        )
+      })
+    } else {
+      const errorMessage = `User with username: ${username} does not exist.`
+      logger.error(errorMessage)
+      throw new Error(errorMessage)
+    }
   } else {
-    const errorMessage = `User with username: ${username} does not exist.`
+    const errorMessage =
+      authorizedKeys.length <= 0
+        ? `There are no authorized keys to delete.`
+        : `There are only ${authorizedKeys.length} authorized keys for user: ${username} and you requested to delete key number ${line}`
     logger.error(errorMessage)
     throw new Error(errorMessage)
   }
