@@ -18,7 +18,7 @@ async function changePassword(root, args, context, info) {
 
 async function createUser(root, args, context, info) {
   if (args.password === args.passwordConfirm) {
-    return User.create(args.username)
+    return User.create(args.username, args.password)
   } else {
     const errorMessage = 'Password and password confirmation are not the same.'
     logger.error(errorMessage)
