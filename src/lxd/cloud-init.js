@@ -5,9 +5,13 @@ const getCloudInitOutputLog = async function (containerName) {
     exec(
       `lxd exec ${containerName} -- cat /var/log/cloud-init-output.log`,
       (err, stdout, stderr) => {
-        if (err) console.error(err)
-        if (stderr) console.error(stderr)
-        return stdout
+        if (err) {
+          reject(err)
+        } else if (stderr) {
+          reject(stderr)
+        } else {
+          resolve(stdout)
+        }
       }
     )
   })
