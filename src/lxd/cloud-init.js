@@ -7,6 +7,7 @@ const getCloudInitOutputLog = async function (containerName) {
       (err, stdout, stderr) => {
         if (err) console.error(err)
         if (stderr) console.error(stderr)
+        return stdout
       }
     )
   })
