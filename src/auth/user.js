@@ -27,6 +27,15 @@ class User extends Model {
     }
     return super.create(fields)
   }
+  static async delete(selector) {
+    if (User.instances > 1) {
+      return super.delete(selector)
+    } else {
+      const errorMessage = `Cannot delete the last user, there must always be at least one.`
+      logger.error(errorMessage)
+      throw new Error(errorMessage)
+    }
+  }
   static async login(username, password) {
     const user = User.instances.find((user) => {
       return user.username === username
