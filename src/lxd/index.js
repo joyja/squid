@@ -3,6 +3,7 @@ const instances = require('./instances')
 const operations = require('./operations')
 const profiles = require('./profiles')
 const { exec } = require('child_process')
+const cloudInit = require('./cloud-init')
 
 const isInit = async function ({ lxdEndpoint, agent }) {
   const defaultProfile = await profiles.get({
@@ -53,4 +54,5 @@ module.exports = {
   profiles,
   isInit,
   certExists,
+  cloudInit,
 }

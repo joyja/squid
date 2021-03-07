@@ -155,6 +155,11 @@ const createProfile = async function (root, args, context, info) {
   })
 }
 
+const getCloudInitOutputLog = async function (root, args, context, info) {
+  await User.getUserFromContext(context)
+  return lxd.cloudInit.getCloudInitOutputLog(args.containerName)
+}
+
 const setInterfaceConfig = async function (root, args, context, info) {
   await User.getUserFromContext(context)
   const config = {
@@ -193,5 +198,6 @@ module.exports = {
   stopContainer,
   restartContainer,
   setDescription,
+  getCloudInitOutputLog,
   setInterfaceConfig,
 }

@@ -183,6 +183,8 @@ type Mutation {
   restartContainer(containerName: String!): Container
   """set description of container"""
   setDescription(containerName: String!, description: String!): Container
+  """get the cloud init output log for a container"""
+  getCloudInitOutputLog(containerName: String!): String!
   """Set network interface configuration"""
   setInterfaceConfig(
     name: String!,
