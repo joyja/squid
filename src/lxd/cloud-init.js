@@ -13,6 +13,6 @@ const getCloudInitOutputLog = async function (containerName) {
   })
 }
 
-module.export = {
+module.exports = {
   getCloudInitOutputLog,
 }
