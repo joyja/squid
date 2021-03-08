@@ -42,9 +42,14 @@ const network = async function (parent, args, { lxdEndpoint, agent }, info) {
 }
 
 const cloudInitComplete = function (parent, args, context, info) {
-  return lxd.cloudInit.getCloudInitStatus(parent.name).then((result) => {
-    return result.includes('done')
-  })
+  return lxd.cloudInit
+    .getCloudInitStatus(parent.name)
+    .then((result) => {
+      return result.includes('done')
+    })
+    .catch(() => {
+      return true
+    })
 }
 
 const application = async function (
