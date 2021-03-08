@@ -27,6 +27,7 @@ const getCloudInitStatus = async function (containerName) {
         } else if (stderr) {
           reject(stderr)
         } else {
+          console.log(stdout.replace('status: ', ''))
           resolve(stdout.replace('status: ', ''))
         }
       }
