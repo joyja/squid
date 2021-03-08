@@ -1,4 +1,6 @@
 const fetch = require('node-fetch')
+const lxd = require('../lxd')
+const { getCloudInitStatus } = require('../lxd/cloud-init')
 
 const profiles = async function (parent, args, { lxdEndpoint, agent }, info) {
   const responses = await Promise.all(
@@ -39,11 +41,8 @@ const network = async function (parent, args, { lxdEndpoint, agent }, info) {
   }
 }
 
-const cloudInitComplete = function (parent, args, { cloudInitComplete }, info) {
-  if (cloudInitComplete[parent.name] === undefined) {
-    cloudInitComplete[parent.name] = true
-  }
-  return cloudInitComplete[parent.name]
+const cloudInitComplete = function (parent, args, context, info) {
+  return lxd.cloudInit.getCloudInitStatus(parent.name) === 'done'
 }
 
 const application = async function (

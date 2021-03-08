@@ -17,6 +17,24 @@ const getCloudInitOutputLog = async function (containerName) {
   })
 }
 
+const getCloudInitStatus = async function (containerName) {
+  return new Promise((resolve, reject) => {
+    exec(
+      `lxc exec ${containerName} -- cloud-init status`,
+      (err, stdout, stderr) => {
+        if (err) {
+          reject(err)
+        } else if (stderr) {
+          reject(stderr)
+        } else {
+          resolve(stdout.replace('status: ', ''))
+        }
+      }
+    )
+  })
+}
+
 module.exports = {
   getCloudInitOutputLog,
+  getCloudInitStatus,
 }
