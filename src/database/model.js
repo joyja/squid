@@ -84,7 +84,7 @@ class Model {
     return result
   }
   // Checks the database version, whether the table exists, and sets the appropriate properties so children can react accordingly in their initialize states.
-  // This is creates the default getters and setters for fields (if they don't already exist on the child constructor)
+  // This creates the default getters and setters for fields (if they don't already exist on the child constructor)
   static async initialize(db, pubsub) {
     this.initialized = true
     this.db = db
