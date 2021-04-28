@@ -40,6 +40,7 @@ const getUsers = async function () {
     'dnsmasq',
     'rtkit',
     'pulse',
+    'caddy',
   ]
   return new Promise((resolve, reject) => {
     exec(`cut -d: -f1 /etc/passwd`, (err, stdout, stderr) => {
