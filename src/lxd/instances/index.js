@@ -1,5 +1,6 @@
 const { start, stop, restart } = require('./state')
 const fetch = require('node-fetch')
+const logger = require('../../logger')
 
 const list = async function ({ lxdEndpoint, agent }) {
   const containers = await fetch(`${lxdEndpoint}/1.0/instances`, {
@@ -19,6 +20,7 @@ const list = async function ({ lxdEndpoint, agent }) {
 }
 
 const create = async function ({ lxdEndpoint, agent, containerName, profile }) {
+  logger.info(`Creating ${containerName} container.`)
   const operation = await fetch(`${lxdEndpoint}/1.0/instances`, {
     method: 'POST',
     agent,
@@ -39,15 +41,23 @@ const create = async function ({ lxdEndpoint, agent, containerName, profile }) {
   })
     .then((result) => result.json())
     .then((data) => data.metadata)
+  logger.info(
+    `Waiting for operation ${operation.id} to create ${containerName}.`
+  )
   await fetch(`${lxdEndpoint}/1.0/operations/${operation.id}/wait`, {
     method: 'GET',
     agent,
   })
+  logger.info(`Starting container ${containerName}.`)
   const startOperation = await start({ lxdEndpoint, agent, containerName })
+  logger.info(
+    `Waiting for operation ${startOperation.id} to create ${containerName}.`
+  )
   await fetch(`${lxdEndpoint}/1.0/operations/${startOperation.id}/wait`, {
     method: 'GET',
     agent,
   })
+  logger.info(`Container ${containerName} started.`)
   return fetch(`${lxdEndpoint}/1.0/instances/${containerName}`, {
     agent,
   })
