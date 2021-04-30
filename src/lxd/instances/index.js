@@ -32,6 +32,8 @@ const create = async function ({ lxdEndpoint, agent, containerName, profile }) {
       type: 'container',
       source: {
         type: 'image',
+        mode: 'pull',
+        server: 'ubuntu',
         properties: {
           os: 'ubuntu',
           release: 'focal',
