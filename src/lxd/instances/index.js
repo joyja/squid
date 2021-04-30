@@ -32,6 +32,7 @@ const create = async function ({ lxdEndpoint, agent, containerName, profile }) {
       type: 'container',
       source: {
         type: 'image',
+        protocol: 'simplestreams',
         mode: 'pull',
         server: 'ubuntu',
         alias: 'ubuntu:focal',
