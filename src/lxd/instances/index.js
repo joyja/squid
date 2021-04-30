@@ -34,10 +34,7 @@ const create = async function ({ lxdEndpoint, agent, containerName, profile }) {
         type: 'image',
         mode: 'pull',
         server: 'ubuntu',
-        properties: {
-          os: 'ubuntu',
-          release: 'focal',
-        },
+        alias: 'ubuntu:focal',
       },
     }),
   })
