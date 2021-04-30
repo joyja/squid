@@ -34,7 +34,7 @@ const create = async function ({ lxdEndpoint, agent, containerName, profile }) {
         type: 'image',
         protocol: 'simplestreams',
         server: 'https://cloud-images.ubuntu.com/releases',
-        alias: 'ubuntu:focal',
+        alias: 'focal',
       },
     }),
   })
