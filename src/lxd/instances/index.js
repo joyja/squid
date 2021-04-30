@@ -41,6 +41,10 @@ const create = async function ({ lxdEndpoint, agent, containerName, profile }) {
   })
     .then((result) => result.json())
     .then((data) => data.metadata)
+    .catch((error) => {
+      logger.error(error)
+      throw error
+    })
   logger.info(
     `Waiting for operation ${operation.id} to create ${containerName}.`
   )
