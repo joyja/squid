@@ -1,4 +1,5 @@
 const fetch = require('node-fetch')
+const logger = require('../../logger')
 
 const changeContainerState = async function ({
   lxdEndpoint,
