@@ -40,7 +40,10 @@ const create = async function ({ lxdEndpoint, agent, containerName, profile }) {
     }),
   })
     .then((result) => result.json())
-    .then((data) => data.metadata)
+    .then((data) => {
+      logger.info(data)
+      data.metadata
+    })
     .catch((error) => {
       logger.error(error)
       throw error
