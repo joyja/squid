@@ -130,6 +130,7 @@ const setDescription = async function (root, args, context, info) {
 }
 
 const getCloudInitOutputLog = async function (root, args, context, info) {
+  const { lxd } = context
   await User.getUserFromContext(context)
   return lxd.instances.getCloudInitOutputLog(args.containerName)
 }
