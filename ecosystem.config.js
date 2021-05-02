@@ -4,7 +4,7 @@ module.exports = {
       name: 'factotum',
       script: './src/index.js',
       env: {
-        NODE_ENV: 'production',
+        NODE_ENV: 'development',
       },
     },
   ],
