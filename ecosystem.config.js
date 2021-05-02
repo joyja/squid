@@ -12,7 +12,7 @@ module.exports = {
     production: {
       user: 'root',
       host: 'localhost',
-      ref: 'origin/main',
+      ref: 'origin/lxdClass',
       repo: 'https://github.com/joyja/factotum.git',
       path: '/usr/local/bin/factotum',
       'post-deploy':
