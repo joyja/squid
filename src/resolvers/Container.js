@@ -1,5 +1,4 @@
 const fetch = require('node-fetch')
-const { getCloudInitStatus } = require('../lxd old/cloud-init')
 
 const profiles = async function (parent, args, { lxd }, info) {
   return Promise.all(parent.profiles.map((p) => lxd.profiles.get(p)))
