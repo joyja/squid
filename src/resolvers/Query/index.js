@@ -1,6 +1,5 @@
 const fetch = require('node-fetch')
 const { network, auth } = require('../../os')
-const lxd = require('../../lxd')
 const { User } = require('../../auth')
 
 async function user(root, args, context, info) {
@@ -28,35 +27,22 @@ async function osUsers(root, args, context, info) {
 //Container Queries
 
 const containers = async function (root, args, context, info) {
-  const { lxdEndpoint, agent, cloudInitComplete } = context
+  const { lxd } = context
   await User.getUserFromContext(context)
-  return lxd.instances.list({ lxdEndpoint, agent })
+  const result = await lxd.instances.list({ lxd })
+  return result
 }
 
 const profiles = async function (root, args, context, info) {
-  const { lxdEndpoint, agent } = context
+  const { lxd } = context
   await User.getUserFromContext(context)
-  return fetch(`${lxdEndpoint}/1.0/profiles`, {
-    agent,
-  }).then((result) => {
-    return result.json().then((data) => {
-      return Promise.all(
-        data.metadata.map((profile) => {
-          return fetch(`${lxdEndpoint}${profile}`, {
-            agent,
-          }).then((result) => {
-            return result.json().then((data) => data.metadata)
-          })
-        })
-      )
-    })
-  })
+  return lxd.profiles.list()
 }
 
 const operations = async function (root, args, context, info) {
-  const { lxdEndpoint, agent } = context
+  const { lxd } = context
   await User.getUserFromContext(context)
-  const result = await lxd.operations.list({ lxdEndpoint, agent })
+  const result = await lxd.operations.list({ lxd })
   return result
 }
 

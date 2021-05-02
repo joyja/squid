@@ -7,7 +7,7 @@ const sqlite3 = require('sqlite3').verbose()
 const express = require('express')
 const { ApolloServer, PubSub, gql } = require('apollo-server-express')
 const resolvers = require('./resolvers')
-const lxd = require('./lxd')
+const LXD = require('./lxd')
 const { User } = require('./auth')
 const { executeQuery } = require('./database')
 const os = require('./os')
@@ -19,10 +19,6 @@ const agent = new https.Agent({
   key: fs.readFileSync(path.resolve('./certificates/lxd.key'), 'utf-8'),
   rejectUnauthorized: false,
 })
-
-const lxdHost = process.env.FACTOTUM_LXD_HOST || 'localhost'
-const lxdPort = process.env.FACTOTUM_LXD_PORT || 8443
-const lxdEndpoint = `https://${lxdHost}:${lxdPort}`
 
 const app = express()
 
@@ -59,10 +55,12 @@ start = async function (dbFilename) {
     })
   }
 
+  const pubsub = new PubSub()
   //Initialize default profiles in LXD
-  await lxd.profiles.initializeDefaultProfiles({ lxdEndpoint, agent })
+  const lxd = new LXD(pubsub)
+  await lxd.init()
   //populate cloudInitComplete object, to be used for creation status
-  const containers = await lxd.instances.list({ lxdEndpoint, agent })
+  const containers = await lxd.instances.list()
   const cloudInitComplete = {}
   containers.forEach((container) => {
     cloudInitComplete[container.name] = true
@@ -75,7 +73,6 @@ start = async function (dbFilename) {
       res.status(400).send({ message: 'Container not found.' })
     }
   })
-  const pubsub = new PubSub()
   graphqlServer = new ApolloServer({
     typeDefs: gql`
       ${fs.readFileSync(__dirname.concat('/schema.graphql'), 'utf8')}
@@ -89,8 +86,7 @@ start = async function (dbFilename) {
       requests: req,
       pubsub,
       db,
-      agent,
-      lxdEndpoint,
+      lxd,
       cloudInitComplete,
       users: User.instances,
     }),

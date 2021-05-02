@@ -1,0 +1,19 @@
+config:
+  user.user-data: |
+    #cloud-config
+    phone_home:
+      url: http://_gateway/api/phone-home/$INSTANCE_ID/
+      post:
+        - hostname
+      tries: 10
+    package_update: true
+    package_upgrade: true
+    runcmd:
+      - cd /home/ubuntu/
+      - 'wget --referer https://inductiveautomation.com/downloads/ignition https://files.inductiveautomation.com/release/ia/8.1.1/20201208-0843/ignition-8.1.1-linux-x64-installer.run'
+      - chmod +x ignition-8.1.1-linux-x64-installer.run
+      - sudo -H -u ubuntu bash -c '/home/ubuntu/ignition-8.1.1-linux-x64-installer.run -- "unattended=text"'
+      - service Ignition-Gateway start
+description: Default LXD profile
+devices: {}
+name: ignition
