@@ -30,14 +30,15 @@ const containers = async function (root, args, context, info) {
   const { lxd } = context
   await User.getUserFromContext(context)
   const result = await lxd.instances.list({ lxd })
-  console.log(result)
   return result
 }
 
 const profiles = async function (root, args, context, info) {
   const { lxd } = context
   await User.getUserFromContext(context)
-  return lxd.profiles.list()
+  const result = lxd.profiles.list()
+  console.log(result)
+  return result
 }
 
 const operations = async function (root, args, context, info) {
