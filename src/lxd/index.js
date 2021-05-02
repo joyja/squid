@@ -19,7 +19,7 @@ class Profiles {
     ]
   }
   async init() {
-    const existingProfiles = await this.list()
+    const existingProfiles = await this.lxd.get('/1.0/profiles')
     for (const profileName of this.defaultNames) {
       const filePath = path.resolve(`./src/profiles/${profileName}.yaml`)
       const fileContents = fs.readFileSync(filePath, 'utf-8')
