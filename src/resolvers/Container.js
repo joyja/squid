@@ -5,7 +5,8 @@ const profiles = async function (parent, args, { lxd }, info) {
 }
 
 const network = async function (parent, args, { lxd }, info) {
-  const { network } = await lxd.instances.state(parent.name)
+  const result = await lxd.instances.state(parent.name)
+  console.log(result)
   if (network) {
     return Object.keys(network)
       .map((key) => {
