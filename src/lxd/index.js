@@ -35,7 +35,12 @@ class Profiles {
     return this.lxd.get(`/1.0/profiles/${name}`)
   }
   async list() {
-    return this.lxd.get('/1.0/profiles')
+    const endpoints = await this.lxd.get('/1.0/profiles')
+    return Promise.all(
+      endpoints.map((endpoint) => {
+        return this.lxd.get(endpoint)
+      })
+    )
   }
   async create(config) {
     const body = JSON.stringify(config)
