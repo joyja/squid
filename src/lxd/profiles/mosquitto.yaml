@@ -1,0 +1,15 @@
+config:
+  user.user-data: |
+    #cloud-config
+    phone_home:
+      url: http://_gateway/api/phone-home/$INSTANCE_ID/
+      post:
+        - hostname
+      tries: 10
+    package_update: true
+    package_upgrade: true
+    packages:
+      - mosquitto
+      - mosquitto-clients
+devices: {}
+name: mosquitto

@@ -1,6 +1,5 @@
 const fetch = require('node-fetch')
 const { network, auth } = require('../../os')
-const lxd = require('../../lxd')
 const { User } = require('../../auth')
 const logger = require('../../logger')
 
@@ -68,96 +67,71 @@ async function deleteAuthorizedKey(root, args, context, info) {
 
 // Container Mutations
 const createContainer = async function (root, args, context, info) {
-  const { lxdEndpoint, agent, cloudInitComplete } = context
+  const { lxd, cloudInitComplete } = context
   await User.getUserFromContext(context)
-  const container = await lxd.instances.create({
-    lxdEndpoint,
-    agent,
-    containerName: args.containerName,
+  let operation = await lxd.instances.create({
+    name: args.containerName,
     profile: args.profile,
   })
+  await lxd.operations.wait(operation.id)
+  operation = await lxd.instances.start(args.containerName)
+  await lxd.operations.wait(operation.id)
+  const container = await lxd.instances.get(args.containerName)
   cloudInitComplete[container.name] = false
   return container
 }
 
 const deleteContainer = async function (root, args, context, info) {
-  const { lxdEndpoint, agent, cloudInitComplete } = context
+  const { lxd, cloudInitComplete } = context
   await User.getUserFromContext(context)
-  const container = await lxd.instances.drop({
-    lxdEndpoint,
-    agent,
-    containerName: args.containerName,
-  })
+  const container = await lxd.instances.get(args.containerName)
+  let operation = await lxd.instances.stop(args.containerName)
+  await lxd.operations.wait(operation.id)
+  operation = await lxd.instances.delete(args.containerName)
+  await lxd.operations.wait(operation.id)
   cloudInitComplete[container.name] = undefined
   return container
 }
 
 const startContainer = async function (root, args, context, info) {
-  const { lxdEndpoint, agent } = context
+  const { lxd } = context
   await User.getUserFromContext(context)
-  return lxd.instances.start({
-    lxdEndpoint,
-    agent,
-    containerName: args.containerName,
-  })
+  operation = await lxd.instances.start(args.containerName)
+  await lxd.operations.wait(operation.id)
+  return lxd.instances.get(args.containerName)
 }
 
 const stopContainer = async function (root, args, context, info) {
-  const { lxdEndpoint, agent } = context
+  const { lxd } = context
   await User.getUserFromContext(context)
-  return lxd.instances.stop({
-    lxdEndpoint,
-    agent,
-    containerName: args.containerName,
-  })
+  operation = await lxd.instances.stop(args.containerName)
+  await lxd.operations.wait(operation.id)
+  return lxd.instances.get(args.containerName)
 }
 
 const restartContainer = async function (root, args, context, info) {
-  const { lxdEndpoint, agent } = context
+  const { lxd } = context
   await User.getUserFromContext(context)
-  return lxd.instances.restart({
-    lxdEndpoint,
-    agent,
-    containerName: args.containerName,
-  })
+  operation = await lxd.instances.restart(args.containerName)
+  await lxd.operations.wait(operation.id)
+  return lxd.instances.get(args.containerName)
 }
 
 const setDescription = async function (root, args, context, info) {
-  const { lxdEndpoint, agent } = context
+  const { lxd } = context
   await User.getUserFromContext(context)
-  await fetch(`${lxdEndpoint}/1.0/instances/${args.containerName}`, {
-    method: 'PATCH',
-    agent,
-    body: JSON.stringify({
+  await lxd.patch(
+    `/1.0/instances/${args.containerName}`,
+    JSON.stringify({
       description: args.description,
-    }),
-  })
-  return fetch(`${lxdEndpoint}/1.0/instances/${args.containerName}`, {
-    agent,
-  })
-    .then((result) => result.json())
-    .then((data) => data.metadata)
-}
-
-const createProfile = async function (root, args, context, info) {
-  const { lxdEndpoint, agent } = context
-  await User.getUserFromContext(context)
-  await fetch(`${lxdEndpoint}/1.0/profiles`, {
-    method: 'POST',
-    agent,
-    body: JSON.stringify({
-      name: args.name,
-      description: args.description,
-      configs: {
-        userData: args.userData,
-      },
-    }),
-  })
+    })
+  )
+  return lxd.instances.get(args.containerName)
 }
 
 const getCloudInitOutputLog = async function (root, args, context, info) {
   await User.getUserFromContext(context)
-  return lxd.cloudInit.getCloudInitOutputLog(args.containerName)
+  return lxd.instances.getCloudInitOutputLog(args.containerName)
 }
 
 const setInterfaceConfig = async function (root, args, context, info) {

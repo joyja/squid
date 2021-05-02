@@ -1,25 +1,12 @@
 const fetch = require('node-fetch')
-const lxd = require('../lxd')
-const { getCloudInitStatus } = require('../lxd/cloud-init')
+const { getCloudInitStatus } = require('../lxd old/cloud-init')
 
-const profiles = async function (parent, args, { lxdEndpoint, agent }, info) {
-  const responses = await Promise.all(
-    parent.profiles.map((p) =>
-      fetch(`${lxdEndpoint}/1.0/profiles/${p}`, { agent: agent })
-    )
-  )
-  const profiles = await Promise.all(responses.map((r) => r.json()))
-  return profiles.map((p) => p.metadata)
+const profiles = async function (parent, args, { lxd }, info) {
+  return Promise.all(parent.profiles.map((p) => lxd.profiles.get(p)))
 }
 
-const network = async function (parent, args, { lxdEndpoint, agent }, info) {
-  const {
-    metadata: { network },
-  } = await fetch(`${lxdEndpoint}/1.0/instances/${parent.name}/state`, {
-    agent: agent,
-  }).then((r) => {
-    return r.json()
-  })
+const network = async function (parent, args, { lxd }, info) {
+  const { network } = await lxd.instances.state(parent.name)
   if (network) {
     return Object.keys(network)
       .map((key) => {
@@ -41,8 +28,8 @@ const network = async function (parent, args, { lxdEndpoint, agent }, info) {
   }
 }
 
-const cloudInitComplete = function (parent, args, context, info) {
-  return lxd.cloudInit
+const cloudInitComplete = function (parent, args, { lxd }, info) {
+  return lxd.instances
     .getCloudInitStatus(parent.name)
     .then((result) => {
       return result.includes('done')
@@ -52,18 +39,8 @@ const cloudInitComplete = function (parent, args, context, info) {
     })
 }
 
-const application = async function (
-  parent,
-  args,
-  { lxdEndpoint, agent },
-  info
-) {
-  const profilesResult = await profiles(
-    parent,
-    args,
-    { lxdEndpoint, agent },
-    info
-  )
+const application = async function (parent, args, { lxd }, info) {
+  const profilesResult = await profiles(parent, args, { lxd }, info)
   const applications = [
     'grafana',
     'ignition',

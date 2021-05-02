@@ -1,0 +1,21 @@
+config:
+  user.network-config: |
+    version: 2
+    ethernets:
+      eth0:
+        dhcp4: true
+      eth1:
+        dhcp4: true
+      eth2:
+        dhcp4: true
+description: macvlan interface directly on LAN
+devices:
+  eth1:
+    nictype: macvlan
+    parent: eno1
+    type: nic
+  eth2:
+    nictype: macvlan
+    parent: enp1s0
+    type: nic
+name: macvlan
