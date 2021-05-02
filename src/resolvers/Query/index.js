@@ -29,7 +29,9 @@ async function osUsers(root, args, context, info) {
 const containers = async function (root, args, context, info) {
   const { lxd } = context
   await User.getUserFromContext(context)
-  return lxd.instances.list({ lxd })
+  const result = await lxd.instances.list({ lxd })
+  console.log(result)
+  return result
 }
 
 const profiles = async function (root, args, context, info) {
