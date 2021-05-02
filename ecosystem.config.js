@@ -4,7 +4,7 @@ module.exports = {
       name: 'factotum',
       script: './src/index.js',
       env: {
-        NODE_ENV: 'development',
+        NODE_ENV: 'production',
       },
     },
   ],
@@ -12,7 +12,7 @@ module.exports = {
     production: {
       user: 'root',
       host: 'localhost',
-      ref: 'origin/lxdClass',
+      ref: 'origin/main',
       repo: 'https://github.com/joyja/factotum.git',
       path: '/usr/local/bin/factotum',
       'post-deploy':
