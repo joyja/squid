@@ -2,6 +2,7 @@ const fetch = require('node-fetch')
 const { network, auth } = require('../../os')
 const { User } = require('../../auth')
 const logger = require('../../logger')
+const { attachConnectorsToContext } = require('graphql-tools')
 
 async function login(root, args, context, info) {
   return User.login(args.username, args.password)
@@ -130,7 +131,7 @@ const setDescription = async function (root, args, context, info) {
 }
 
 const getCloudInitOutputLog = async function (root, args, context, info) {
-  const { lxd } = context
+  const { lxd } = attachConnectorsToContext
   await User.getUserFromContext(context)
   return lxd.instances.getCloudInitOutputLog(args.containerName)
 }
