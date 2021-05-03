@@ -1,4 +1,4 @@
-![Squid](https://res.cloudinary.com/jarautomation/image/upload/b_rgb:263238/c_scale,w_250/w_270,c_lpad/v1619244276/logos/Squid_Logo.png)
+![Squid](https://res.cloudinary.com/jarautomation/image/upload/c_scale,w_250/v1620021226/logos/Squid%20Logo%20Light.png)
 
 Graphql API for managing IIOT containers at the edge
 
